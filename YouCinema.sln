@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26403.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YouCineLibrary", "YouCineLibrary\YouCineLibrary.csproj", "{249AE78D-0EF2-4C58-BBE6-E471DCED239C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YouCineUI", "YouCineUI\YouCineUI.csproj", "{FF4E3E88-1C70-48B0-914B-141D628FE330}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{249AE78D-0EF2-4C58-BBE6-E471DCED239C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{249AE78D-0EF2-4C58-BBE6-E471DCED239C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{249AE78D-0EF2-4C58-BBE6-E471DCED239C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF4E3E88-1C70-48B0-914B-141D628FE330}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF4E3E88-1C70-48B0-914B-141D628FE330}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF4E3E88-1C70-48B0-914B-141D628FE330}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF4E3E88-1C70-48B0-914B-141D628FE330}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

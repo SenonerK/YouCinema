@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace YouCineLibrary
+namespace YouCineLibrary.DataAccess
 {
-    public class Class1
+    public interface IDataConnection
     {
+        bool TestConnection();
     }
 }
