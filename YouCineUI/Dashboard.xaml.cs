@@ -33,5 +33,20 @@ namespace YouCineUI
             // daten von datenbank einlesen ... 
             // (dazu brachen wir zierst amol die gonzn models und struktur ...)
         }
+
+        private void Button_Projections_Search_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void btn_projections_del_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Projections_Add_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
     }
 }

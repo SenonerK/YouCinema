@@ -51,10 +51,16 @@
     <Compile Include="DataAccess\ConnectionType.cs" />
     <Compile Include="DataAccess\IDataConnection.cs" />
     <Compile Include="DataAccess\PSqlConnector.cs" />
+    <Compile Include="Models\ActorModel.cs" />
+    <Compile Include="Models\AuditoriumModel.cs" />
+    <Compile Include="Models\BorrowModel.cs" />
+    <Compile Include="Models\CustomerModel.cs" />
+    <Compile Include="Models\MovieModel.cs" />
+    <Compile Include="Models\MovieParticipationModel.cs" />
+    <Compile Include="Models\ProjectionModel.cs" />
+    <Compile Include="Models\ReservationModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
