@@ -15,12 +15,14 @@ using System.Configuration;
 
 namespace YouCineUI
 {
+    /// TODO - Combobox einbauen damit man zwischen (PostgreSQL, MySQL, ...) wählen kann
     public partial class DBConnections : Window
     {
         public DBConnections()
         {
             InitializeComponent();
 
+            // Jeden connection string der schon existiert in die Auswahl laden
             foreach (ConnectionStringSettings c in ConfigurationManager.ConnectionStrings)
             {
                 lst_db.Items.Add(c.Name);
@@ -29,8 +31,10 @@ namespace YouCineUI
 
         private void Button_OK_Click(object sender, RoutedEventArgs e)
         {
+            // Wenn "Hinzufügen" gedrückt wurde
             if (!lst_db.IsEnabled)
             {
+                // Neue connnection string erstellen
                 var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                 config
                     .ConnectionStrings
@@ -40,14 +44,14 @@ namespace YouCineUI
                         Name = txt_name.Text,
                         ConnectionString = txt_cnnString.Text
                     });
+                // Configuration speichern
                 config.Save();
             }
 
-            if (!string.IsNullOrEmpty(txt_name.Text)
-                && !string.IsNullOrEmpty(txt_cnnString.Text)
-                && !string.IsNullOrWhiteSpace(txt_name.Text)
-                && !string.IsNullOrWhiteSpace(txt_cnnString.Text))
+            // Wenn eingaben nich leer... sind
+            if (hasValidInput())
             {
+                // Die connection string in der config laden und fenster schliessen
                 YouCineLibrary.Config.InitializeConnection(
                     YouCineLibrary.DataAccess.ConnectionType.PostgreSQL, txt_cnnString.Text);
                 this.DialogResult = true;
@@ -57,8 +61,20 @@ namespace YouCineUI
                 MessageBox.Show("Überprüfen Sie Ihre Eingaben!", "Fehler!", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
+        private bool hasValidInput()
+        {
+            if (!string.IsNullOrEmpty(txt_name.Text)
+                && !string.IsNullOrEmpty(txt_cnnString.Text)
+                && !string.IsNullOrWhiteSpace(txt_name.Text)
+                && !string.IsNullOrWhiteSpace(txt_cnnString.Text))
+                return true;
+
+            return false;
+        }
+
         private void lst_db_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            // Config aus liste laden
             if (lst_db.SelectedIndex >= 0)
             {
                 ConnectionStringSettings s = ConfigurationManager.ConnectionStrings[lst_db.SelectedItem.ToString()];
@@ -69,6 +85,9 @@ namespace YouCineUI
 
         private void Button_New_Click(object sender, RoutedEventArgs e)
         {
+            // Listbox deaktivieren damit nicht etwas anders ausgewählt werden kann
+            // Eingabefelder aktivieren um eingabe zu ermöglichen
+
             txt_cnnString.Text = "";
             txt_name.Text = "";
             lst_db.IsEnabled = false;
@@ -78,8 +97,20 @@ namespace YouCineUI
 
         private void Button_Test_Click(object sender, RoutedEventArgs e)
         {
-            // no net implementiert
-            /// TODO - Implement test connection feature on DBConnections-Window
+            if (hasValidInput())
+            {
+                // In die config dieser app laden
+                YouCineLibrary.Config.InitializeConnection(YouCineLibrary.DataAccess.ConnectionType.PostgreSQL, txt_cnnString.Text);
+
+                // Verbindug testen
+                if (YouCineLibrary.Config.Connection.TestConnection())
+                    MessageBox.Show("Verbindugn konnte aufgebaut werden!", "YouCinema", MessageBoxButton.OK, MessageBoxImage.Information);
+                else
+                    MessageBox.Show("Es konnte keine Verbindug hergestellt werden!", "Fehler!", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                // Verbindug wieder entfernen
+                YouCineLibrary.Config.RemoveConnection();
+            }
         }
     }
 }

@@ -26,14 +26,15 @@
                 <RowDefinition Height="20" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="30" />
+                <RowDefinition Height="30" />
             </Grid.RowDefinitions>
             
             <TextBlock Text="Name:" Grid.Row="0"/>
             <TextBox Grid.Row="1" x:Name="txt_name" IsReadOnly="True" />
             <TextBlock Text="Connection string:" Grid.Row="2" />
-            <TextBox Grid.Row="3" x:Name="txt_cnnString" IsReadOnly="True" />
-            <Button Content="verbindung testen" VerticalAlignment="Bottom" Grid.Row="4" Click="Button_Test_Click" Margin="0,5"/>
-            <Button Content="OK" VerticalAlignment="Bottom" Grid.Row="4" Click="Button_OK_Click" Margin="0,5"/>
+            <TextBox Grid.Row="3" x:Name="txt_cnnString" IsReadOnly="True" TextWrapping="Wrap" />
+            <Button Content="Verbindung testen" VerticalAlignment="Bottom" Grid.Row="4" Click="Button_Test_Click" Margin="0,5"/>
+            <Button Content="OK" VerticalAlignment="Bottom" Grid.Row="5" Click="Button_OK_Click" Margin="0,5"/>
         </Grid>
     </Grid>
 </Window>

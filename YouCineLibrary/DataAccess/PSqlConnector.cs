@@ -24,22 +24,19 @@ namespace YouCineLibrary.DataAccess
 
         public bool TestConnection()
         {
-            if (!hasConnectionString())
-                return false;
-
-            using(NpgsqlConnection cnn = new NpgsqlConnection(ConnectionString))
+            try
             {
-                try
+                if (!hasConnectionString())
+                    return false;
+
+                using (NpgsqlConnection cnn = new NpgsqlConnection(ConnectionString))
                 {
                     cnn.Open();
                     cnn.Close();
                     return true;
                 }
-                catch
-                {
-                    return false;
-                }
             }
+            catch { return false; }
         }
     }
 }

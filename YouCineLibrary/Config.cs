@@ -23,5 +23,10 @@ namespace YouCineLibrary
                     break;
             }
         }
+
+        public static void RemoveConnection()
+        {
+            Connection = null;
+        }
     }
 }
