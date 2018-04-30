@@ -54,6 +54,7 @@
     <Compile Include="Models\ActorModel.cs" />
     <Compile Include="Models\AuditoriumModel.cs" />
     <Compile Include="Models\BorrowModel.cs" />
+    <Compile Include="Models\CinemaModel.cs" />
     <Compile Include="Models\CustomerModel.cs" />
     <Compile Include="Models\MovieModel.cs" />
     <Compile Include="Models\MovieParticipationModel.cs" />

@@ -97,6 +97,7 @@ namespace YouCineUI
 
         private void Button_Test_Click(object sender, RoutedEventArgs e)
         {
+            this.Cursor = Cursors.Wait;
             if (hasValidInput())
             {
                 // In die config dieser app laden
@@ -111,6 +112,7 @@ namespace YouCineUI
                 // Verbindug wieder entfernen
                 YouCineLibrary.Config.RemoveConnection();
             }
+            this.Cursor = Cursors.Arrow;
         }
     }
 }

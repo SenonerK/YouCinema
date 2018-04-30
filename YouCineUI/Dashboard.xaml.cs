@@ -22,16 +22,35 @@ namespace YouCineUI
         public Dashboard()
         {
             InitializeComponent();
+            ShowDBUI();
+        }
+
+        private void ShowDBUI()
+        {
+            // Window anzeigen zur auswahl der Dantenbankverbindung
             if (new DBConnections().ShowDialog().Value && Config.Connection.TestConnection())
-            {
                 LoadUI();
+            else
+            {
+                // Wenn vrebindug nicht erfolgreich war auswahl anzeigen
+                MessageBoxResult r = MessageBox.Show(
+                    "Die Datenbankverbindug konnte nicht aufgebaut werden"
+                    + Environment.NewLine
+                    + "Möchten Sie es nochmals versuchen?",
+                    "Fehler!",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Error);
+
+                if (r == MessageBoxResult.Yes)
+                    ShowDBUI();
+                else
+                    this.Close();
             }
         }
 
         private void LoadUI()
         {
-            // daten von datenbank einlesen ... 
-            // (dazu brachen wir zierst amol die gonzn models und struktur ...)
+            Config.LoadCinema();
         }
 
         #region ProjectionsTab

@@ -2,7 +2,8 @@
 {
     public class MovieParticipationModel
     {
-        public ActorModel Actor { get; set; }
-        public MovieModel Movie { get; set; }
+        public string Actor { get; set; }
+        public string Movie { get; set; }
+        public string Role { get; set; }
     }
 }

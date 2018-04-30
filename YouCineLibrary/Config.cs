@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using YouCineLibrary.DataAccess;
+using YouCineLibrary.Models;
 
 namespace YouCineLibrary
 {
     public static class Config
     {
         public static IDataConnection Connection { get; private set; }
+        public static Models.CinemaModel Cinema { get; set; }
 
         public static void InitializeConnection(ConnectionType type, string CnnString)
         {
@@ -27,6 +29,39 @@ namespace YouCineLibrary
         public static void RemoveConnection()
         {
             Connection = null;
+        }
+
+        public static void LoadCinema()
+        {
+            Cinema = new Models.CinemaModel();
+
+            // Alles von der DB laden. Bitte Reihenfolge nicht ändern
+            Cinema.Movies = Connection.LoadMovies();
+            Cinema.Auditoriums = Connection.LoadAuditoriums();
+            Cinema.Actors = Connection.LoadActors();
+            Cinema.Customers = Connection.LoadCustomers();
+            Cinema.Projections = Connection.LoadProjections();
+            Cinema.Reservations = Connection.LoadReservations();
+            Cinema.Borrows = Connection.LoadBorrows();
+            Cinema.MovieParticipations = Connection.LoadMovieParticipations();
+        }
+
+        public static AuditoriumModel GetAuditById(string v)
+        {
+            foreach(AuditoriumModel a in Cinema.Auditoriums)
+                if (a.ID == v)
+                    return a;
+
+            return null;
+        }
+
+        public static MovieModel GetMovieById(string v)
+        {
+            foreach (MovieModel m in Cinema.Movies)
+                if (m.ID == v)
+                    return m;
+
+            return null;
         }
     }
 }
