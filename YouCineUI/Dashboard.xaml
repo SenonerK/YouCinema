@@ -11,6 +11,13 @@
             <Setter Property="FontSize" Value="18" />
             <Setter Property="Margin" Value="10,5" />
         </Style>
+        <Style TargetType="DatePicker">
+            <Setter Property="FontSize" Value="15" />
+        </Style>
+        <Style TargetType="TextBlock" x:Key="topbar">
+            <Setter Property="Margin" Value="20,0,5,0" />
+            <Setter Property="FontSize" Value="18" />
+        </Style>
     </Window.Resources>
     <Grid>
         <TabControl>
@@ -29,18 +36,9 @@
                     </Grid.RowDefinitions>
 
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <StackPanel.Resources>
-                            <Style TargetType="DatePicker">
-                                <Setter Property="FontSize" Value="15" />
-                            </Style>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Margin" Value="20,0,5,0" />
-                                <Setter Property="FontSize" Value="18" />
-                            </Style>
-                        </StackPanel.Resources>
-                        <TextBlock Text="Von:" />
+                        <TextBlock Text="Von:" Style="{StaticResource topbar}" />
                         <DatePicker x:Name="dte_von_projections" />
-                        <TextBlock Text="Bis:" />
+                        <TextBlock Text="Bis:" Style="{StaticResource topbar}" />
                         <DatePicker x:Name="dte_bis_projections" />
                         <Button Content="Suche" Margin="10,0,0,0" FontSize="18" Click="Button_Projections_Search_Click"/>
                     </StackPanel>
@@ -84,7 +82,7 @@
                             </Style>
                         </StackPanel.Resources>
                         <Button Content="Hinzufügen" Click="Button_Audit_Add_Click" />
-                        <Button Content="Entfernen" Click="Button_Audit_Del_Click" />
+                        <!--<Button Content="Entfernen" Click="Button_Audit_Del_Click" />-->
                     </StackPanel>
 
                     <WrapPanel Grid.Row="1" Margin="15">
@@ -108,10 +106,64 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Reservierungen">
-                
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="Von:" Style="{StaticResource topbar}" />
+                        <DatePicker x:Name="dte_von_reservations" />
+                        <TextBlock Text="Bis:" Style="{StaticResource topbar}" />
+                        <DatePicker x:Name="dte_bis_reservations" />
+                        <Button Content="Suche" Margin="10,0,0,0" FontSize="18" Click="Button_Reservations_Search_Click"/>
+                    </StackPanel>
+
+                    <DataGrid Grid.Row="1" x:Name="dg_reservations" />
+
+                    <StackPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Center">
+                        <Button Content="Hinzufügen" Style="{StaticResource RightPanel}" Click="Button_Reservations_Add_Click" />
+                        <Button Content="Entfernen" Style="{StaticResource RightPanel}" x:Name="btn_reservations_del" Click="Button_Reservations_Del_Click" />
+                    </StackPanel>
+                </Grid>
             </TabItem>
             <TabItem Header="Verleih">
-                
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50*" />
+                        <RowDefinition Height="10" />
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="45*" />
+                    </Grid.RowDefinitions>
+
+                    <DataGrid x:Name="dg_borrows" />
+
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <Button Content="Verleihen" Style="{StaticResource RightPanel}" Click="Button_Borrow_Add_Click" />
+                        <Button x:Name="btn_borrow_del" Content="Rückgabe" Style="{StaticResource RightPanel}" Click="Button_Borrow_Del_Click" />
+                    </StackPanel>
+
+                    <Grid Background="Black" Margin="0,8,0,0" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" />
+
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Row="2">
+                        <TextBlock Text="Von:" Style="{StaticResource topbar}" />
+                        <DatePicker x:Name="dte_von_borrows" />
+                        <TextBlock Text="Bis:" Style="{StaticResource topbar}" />
+                        <DatePicker x:Name="dte_bis_borrows" />
+                        <Button Content="Suche" Margin="10,0,0,0" FontSize="18" Click="Button_Borrow_Search_Click"/>
+                    </StackPanel>
+
+                    <DataGrid Grid.Row="3" x:Name="dg_borrows_log" />
+                </Grid>
             </TabItem>
         </TabControl>
     </Grid>

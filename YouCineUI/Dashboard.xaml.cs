@@ -100,5 +100,42 @@ namespace YouCineUI
 
         #endregion
 
+        #region ReservationsTab
+
+        private void Button_Reservations_Search_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Reservations_Add_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Reservations_Del_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        #endregion
+
+        #region BorrowTab
+
+        private void Button_Borrow_Add_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Borrow_Del_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Borrow_Search_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        #endregion
     }
 }
