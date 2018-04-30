@@ -9,5 +9,6 @@ namespace YouCineLibrary.Models
         public string MovieName { get; set; }
         public DateTime Published { get; set; }
         public decimal Price { get; set; }
+        public byte[] Image { get; set; }
     }
 }

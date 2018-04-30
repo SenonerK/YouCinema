@@ -48,5 +48,20 @@ namespace YouCineUI
         {
             
         }
+
+        private void Button_Movie_Prev_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Movie_Next_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Movie_Add_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
