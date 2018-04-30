@@ -6,6 +6,12 @@
         xmlns:local="clr-namespace:YouCineUI"
         mc:Ignorable="d"
         Title="Dashboard" Height="350" MinHeight="350" Width="650" MinWidth="650">
+    <Window.Resources>
+        <Style TargetType="Button" x:Key="RightPanel">
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="Margin" Value="10,5" />
+        </Style>
+    </Window.Resources>
     <Grid>
         <TabControl>
             <TabItem Header="Home">
@@ -42,8 +48,8 @@
                     <DataGrid Grid.Row="1" x:Name="dg_projections" />
 
                     <StackPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Center">
-                        <Button Content="Hinzufügen" FontSize="18" Margin="10,5" Click="Button_Projections_Add_Click" />
-                        <Button Content="Entfernen" FontSize="18" Margin="10,5" x:Name="btn_projections_del" Click="btn_projections_del_Click" />
+                        <Button Content="Hinzufügen" Style="{StaticResource RightPanel}" Click="Button_Projections_Add_Click" />
+                        <Button Content="Entfernen" Style="{StaticResource RightPanel}" x:Name="btn_projections_del" Click="btn_projections_del_Click" />
                     </StackPanel>
                 </Grid>
             </TabItem>
@@ -67,7 +73,19 @@
                 
             </TabItem>
             <TabItem Header="Kunden">
-                
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+
+                    <DataGrid x:Name="dg_customers" />
+
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <Button Content="Hinzufügen" Style="{StaticResource RightPanel}" Click="Button_Customers_Add_Click" />
+                        <Button Content="Entfernen" Style="{StaticResource RightPanel}" x:Name="btn_customer_del" Click="Button_Customers_Del_Click" />
+                    </StackPanel>
+                </Grid>
             </TabItem>
             <TabItem Header="Reservierungen">
                 

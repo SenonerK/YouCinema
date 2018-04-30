@@ -63,5 +63,15 @@ namespace YouCineUI
         {
 
         }
+
+        private void Button_Customers_Add_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Customers_Del_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
