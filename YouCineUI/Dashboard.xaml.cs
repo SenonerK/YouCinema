@@ -34,6 +34,8 @@ namespace YouCineUI
             // (dazu brachen wir zierst amol die gonzn models und struktur ...)
         }
 
+        #region ProjectionsTab
+
         private void Button_Projections_Search_Click(object sender, RoutedEventArgs e)
         {
             
@@ -48,6 +50,10 @@ namespace YouCineUI
         {
             
         }
+
+        #endregion
+
+        #region MovieTab
 
         private void Button_Movie_Prev_Click(object sender, RoutedEventArgs e)
         {
@@ -64,6 +70,10 @@ namespace YouCineUI
 
         }
 
+        #endregion
+
+        #region CustomersTab
+
         private void Button_Customers_Add_Click(object sender, RoutedEventArgs e)
         {
 
@@ -73,5 +83,22 @@ namespace YouCineUI
         {
 
         }
+
+        #endregion
+
+        #region AuditoriumTab
+
+        private void Button_Audit_Add_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Audit_Del_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        #endregion
+
     }
 }

@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="YouCineUI.AuditViewControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:YouCineUI"
+             mc:Ignorable="d">
+    <StackPanel Background="#FFFD474F" Margin="10">
+        <StackPanel.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="Margin" Value="10,3" />
+                <Setter Property="Foreground" Value="White" />
+                <Setter Property="FontWeight" Value="Bold" />
+            </Style>
+        </StackPanel.Resources>
+        <TextBlock x:Name="lbl_name" />
+        <TextBlock x:Name="lbl_places" />
+        <TextBlock x:Name="lbl_mov_name" />
+    </StackPanel>
+</UserControl>

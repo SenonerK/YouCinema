@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:YouCineUI"
              mc:Ignorable="d" >
-        <StackPanel Margin="8">
+        <StackPanel Margin="8" MouseLeftButtonUp="StackPanel_MouseLeftButtonUp">
             <Image Height="158" Width="107" x:Name="img" />
             <TextBlock Text="Matrix" HorizontalAlignment="Center" x:Name="txt" FontFamily="Segoe UI Light" FontSize="16" Margin="0,5" />
         </StackPanel>
