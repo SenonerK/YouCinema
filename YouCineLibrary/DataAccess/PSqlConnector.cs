@@ -42,6 +42,29 @@ namespace YouCineLibrary.DataAccess
             catch { return false; }
         }
 
+        public bool Execute(NpgsqlCommand cmd)
+        {
+            try
+            {
+                if (!hasConnectionString())
+                    return false;
+
+                using (NpgsqlConnection cnn = new NpgsqlConnection(ConnectionString))
+                {
+                    cnn.Open();
+                    cmd.Connection = cnn;
+                    cmd.ExecuteNonQuery();
+                    return true;
+                }
+            }
+            catch (Exception ex) { return false; }
+        }
+
+        public bool Execute(string cmd)
+        {
+            return Execute(new NpgsqlCommand(cmd));
+        }
+
         public DataTable Query(NpgsqlCommand cmd)
         {
             try
@@ -256,6 +279,35 @@ namespace YouCineLibrary.DataAccess
             }
 
             return ret;
+        }
+
+        public bool DeleteCustomer(string ID)
+        {
+            // Lösche alle logeinträge von diesem Kunden um Ihn löschen zu können
+            NpgsqlCommand cmd = new NpgsqlCommand("DELETE FROM yc_borrow_log WHERE fk_customerid=@CID");
+            cmd.Parameters.Add(new NpgsqlParameter("CID", ID));
+            Execute(cmd);
+
+            cmd = new NpgsqlCommand("DELETE FROM yc_customer WHERE id=@CID");
+            cmd.Parameters.Add(new NpgsqlParameter("CID", ID));
+            return Execute(cmd);
+        }
+
+        public CustomerModel CreateCustomer(string firstname, string lastname, string email)
+        {
+            NpgsqlCommand cmd = new NpgsqlCommand("INSERT INTO yc_customer (firstname,lastname,email,credit) VALUES (@FName, @LName, @Email, 0) RETURNING id");
+            cmd.Parameters.Add(new NpgsqlParameter("FName", firstname));
+            cmd.Parameters.Add(new NpgsqlParameter("LName", lastname));
+            cmd.Parameters.Add(new NpgsqlParameter("Email", email));
+
+            return new CustomerModel()
+            {
+                ID = Query(cmd).Rows[0][0].ToString(),
+                FirstName = firstname,
+                LastName = lastname,
+                Email = email,
+                Credit = 0,
+            };
         }
     }
 }

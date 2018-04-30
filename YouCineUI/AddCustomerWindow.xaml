@@ -1,0 +1,32 @@
+﻿<Window x:Class="YouCineUI.AddCustomerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:YouCineUI"
+        mc:Ignorable="d"
+        Title="Kunde hinzufügen" Height="260" Width="300" ResizeMode="CanMinimize">
+    <Grid>
+        <StackPanel Margin="10">
+            <StackPanel.Resources>
+                <Style TargetType="TextBox">
+                    <Setter Property="Margin" Value="0,5" />
+                    <Setter Property="FontSize" Value="16" />
+                </Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="FontSize" Value="18" />
+                </Style>
+            </StackPanel.Resources>
+            <TextBlock Text="Vorname:" />
+            <TextBox x:Name="txt_fname" PreviewTextInput="Name_PreviewTextInput" />
+            <TextBlock Text="Nachname:" />
+            <TextBox x:Name="txt_lname" PreviewTextInput="Name_PreviewTextInput" />
+            <TextBlock Text="E-Mail:" />
+            <TextBox x:Name="txt_email" PreviewTextInput="Email_PreviewTextInput" />
+            <UniformGrid>
+                <Button Content="Abbrechen" Margin="0,0,5,0" FontSize="18" Click="Button_Abbr_Click" />
+                <Button Content="OK" Margin="5,0,0,0" FontSize="18" Click="Button_OK_Click" />
+            </UniformGrid>
+        </StackPanel>
+    </Grid>
+</Window>

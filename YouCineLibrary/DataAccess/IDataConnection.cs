@@ -27,5 +27,9 @@ namespace YouCineLibrary.DataAccess
         List<BorrowModel> LoadBorrows();
 
         List<MovieParticipationModel> LoadMovieParticipations();
+
+        bool DeleteCustomer(string ID);
+
+        CustomerModel CreateCustomer(string firstname, string lastname, string email);
     }
 }

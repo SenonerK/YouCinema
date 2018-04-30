@@ -97,7 +97,14 @@
                         <ColumnDefinition Width="1*" />
                     </Grid.ColumnDefinitions>
 
-                    <DataGrid x:Name="dg_customers" />
+                    <DataGrid x:Name="dg_customers" ItemsSource="{Binding}" AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Width="*" Header="Vorname" Binding="{Binding FirstName}" />
+                            <DataGridTextColumn Width="*" Header="Nachname" Binding="{Binding LastName}" />
+                            <DataGridTextColumn Width="*" Header="E-Mail" Binding="{Binding Email}" />
+                            <DataGridTextColumn Width="70" CanUserResize="False" Header="Kontostand" Binding="{Binding Credit}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
 
                     <StackPanel Grid.Column="1" VerticalAlignment="Center">
                         <Button Content="Hinzufügen" Style="{StaticResource RightPanel}" Click="Button_Customers_Add_Click" />

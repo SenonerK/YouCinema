@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using YouCineLibrary;
-using YouCineLibrary.DataAccess;
+using YouCineLibrary.Models;
 
 namespace YouCineUI
 {
@@ -51,13 +51,15 @@ namespace YouCineUI
         private void LoadUI()
         {
             Config.LoadCinema();
+
+            LoadCustomers();            
         }
 
         #region ProjectionsTab
 
         private void Button_Projections_Search_Click(object sender, RoutedEventArgs e)
         {
-            
+
         }
 
         private void btn_projections_del_Click(object sender, RoutedEventArgs e)
@@ -67,7 +69,7 @@ namespace YouCineUI
 
         private void Button_Projections_Add_Click(object sender, RoutedEventArgs e)
         {
-            
+
         }
 
         #endregion
@@ -93,14 +95,39 @@ namespace YouCineUI
 
         #region CustomersTab
 
+        private void LoadCustomers()
+        {
+            dg_customers.DataContext = Config.Cinema.Customers;
+            dg_customers.CanUserAddRows = false;
+            dg_customers.CanUserDeleteRows = false;
+            dg_customers.CanUserResizeRows = false;
+            dg_customers.IsReadOnly = true;
+        }
+
+        private void UpdateCustomers()
+        {
+            dg_customers.Items.Refresh();
+        }
+
         private void Button_Customers_Add_Click(object sender, RoutedEventArgs e)
         {
-
+            new AddCustomerWindow().ShowDialog();
+            UpdateCustomers();
         }
 
         private void Button_Customers_Del_Click(object sender, RoutedEventArgs e)
         {
+            if (dg_customers.SelectedIndex > -1)
+            {
+                if ((dg_customers.SelectedItem as CustomerModel).Delete())
+                    Config.Cinema.Customers.Remove(dg_customers.SelectedItem as CustomerModel);
+                else
+                    MessageBox.Show("Fehler auf Seiten der Dantenbank. Möglicherweise existieren irgendwo noch Einträge die mit diesem Kunden in verbindung stehen!");
+            }
+            else
+                MessageBox.Show("Wählen Sie einen Kunden aus!");
 
+            UpdateCustomers();
         }
 
         #endregion
@@ -155,6 +182,6 @@ namespace YouCineUI
 
         }
 
-        #endregion
+        #endregion        
     }
 }

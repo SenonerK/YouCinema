@@ -33,7 +33,7 @@ namespace YouCineLibrary
 
         public static void LoadCinema()
         {
-            Cinema = new Models.CinemaModel();
+            Cinema = new CinemaModel();
 
             // Alles von der DB laden. Bitte Reihenfolge nicht ändern
             Cinema.Movies = Connection.LoadMovies();
