@@ -88,7 +88,7 @@ namespace YouCineUI
 
         private void Button_Movie_Add_Click(object sender, RoutedEventArgs e)
         {
-
+            new AddMovieWindow().Show();
         }
 
         #endregion

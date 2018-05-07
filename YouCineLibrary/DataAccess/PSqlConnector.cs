@@ -39,7 +39,7 @@ namespace YouCineLibrary.DataAccess
                     return true;
                 }
             }
-            catch { return false; }
+            catch (Exception ex) { return false; }
         }
 
         public bool Execute(NpgsqlCommand cmd)
@@ -165,7 +165,7 @@ namespace YouCineLibrary.DataAccess
         {
             List<CustomerModel> ret = new List<CustomerModel>();
 
-            DataTable tmp = Query("SELECT id,firstname,lastname,email,credit FROM yc_customer");
+            DataTable tmp = Query("SELECT id,firstname,lastname,email,credit FROM yc_customer WHERE isdisabled=false");
 
             if (tmp == null)
                 throw new Exception("Datenbank hat NULL zurückgegeben bei yc_customer");
@@ -283,19 +283,14 @@ namespace YouCineLibrary.DataAccess
 
         public bool DeleteCustomer(string ID)
         {
-            // Lösche alle logeinträge von diesem Kunden um Ihn löschen zu können
-            NpgsqlCommand cmd = new NpgsqlCommand("DELETE FROM yc_borrow_log WHERE fk_customerid=@CID");
-            cmd.Parameters.Add(new NpgsqlParameter("CID", ID));
-            Execute(cmd);
-
-            cmd = new NpgsqlCommand("DELETE FROM yc_customer WHERE id=@CID");
+            NpgsqlCommand cmd = new NpgsqlCommand("UPDATE yc_customer SET isdisabled=true WHERE id=@CID");
             cmd.Parameters.Add(new NpgsqlParameter("CID", ID));
             return Execute(cmd);
         }
 
         public CustomerModel CreateCustomer(string firstname, string lastname, string email)
         {
-            NpgsqlCommand cmd = new NpgsqlCommand("INSERT INTO yc_customer (firstname,lastname,email,credit) VALUES (@FName, @LName, @Email, 0) RETURNING id");
+            NpgsqlCommand cmd = new NpgsqlCommand("INSERT INTO yc_customer (firstname,lastname,email,credit,isdisabled) VALUES (@FName, @LName, @Email, 0, false) RETURNING id");
             cmd.Parameters.Add(new NpgsqlParameter("FName", firstname));
             cmd.Parameters.Add(new NpgsqlParameter("LName", lastname));
             cmd.Parameters.Add(new NpgsqlParameter("Email", email));
@@ -311,3 +306,6 @@ namespace YouCineLibrary.DataAccess
         }
     }
 }
+/// TODO - patchen lol min 30 min warten
+/// TODO - Version
+/// TODO - Bildnr.
