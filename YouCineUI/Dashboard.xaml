@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:YouCineUI"
         mc:Ignorable="d"
-        Title="Dashboard" Height="350" MinHeight="350" Width="650" MinWidth="650">
+        Title="Dashboard" Height="350" MinHeight="400" Width="650" MinWidth="650">
     <Window.Resources>
         <Style TargetType="Button" x:Key="RightPanel">
             <Setter Property="FontSize" Value="18" />
@@ -58,11 +58,9 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Button Content="Hinzufügen" FontSize="18" HorizontalAlignment="Left" Click="Button_Movie_Add_Click" />
-                    <DockPanel Grid.Row="1" Margin="10">
-                        <Button FontSize="30" Content="‹" DockPanel.Dock="Left" Click="Button_Movie_Prev_Click" />
+                    <ScrollViewer Grid.Row="1">
                         <WrapPanel x:Name="wrap_movies" />
-                        <Button Click="Button_Movie_Next_Click" FontSize="30" Content="›" DockPanel.Dock="Right" HorizontalAlignment="Right" />
-                    </DockPanel>
+                    </ScrollViewer>
                 </Grid>
             </TabItem>
             <TabItem Header="Säle">

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Npgsql;
 using YouCineLibrary.Models;
+using System.Text;
 
 namespace YouCineLibrary.DataAccess
 {
@@ -81,7 +82,7 @@ namespace YouCineLibrary.DataAccess
                     return data;
                 }
             }
-            catch { return null; }
+            catch (Exception ex) { return null; }
         }
 
         public DataTable Query(string cmd)
@@ -332,9 +333,13 @@ namespace YouCineLibrary.DataAccess
             cmd.Parameters.Add(new NpgsqlParameter("Price", price));
             cmd.Parameters.Add(new NpgsqlParameter("Photo", photo));
 
+            DataTable tmp = Query(cmd);
+            if(tmp==null)
+                throw new Exception("Die Datenbank hat NULL zurückgegeben bei yc_participations!");
+
             return new MovieModel()
             {
-                ID = Query(cmd).Rows[0][0].ToString(),
+                ID = tmp.Rows[0][0].ToString(),
                 MovieName = name,
                 MovieDescription = description,
                 Published = year,
@@ -349,6 +354,9 @@ namespace YouCineLibrary.DataAccess
             cmd.Parameters.Add(new NpgsqlParameter("Actor", ActorID));
             cmd.Parameters.Add(new NpgsqlParameter("Movie", movieID));
             cmd.Parameters.Add(new NpgsqlParameter("Role", Role));
+
+            if (!Execute(cmd))
+                throw new Exception("Die Daten konnten nicht in die Datenbank geschrieben werden");
 
             return new MovieParticipationModel()
             {

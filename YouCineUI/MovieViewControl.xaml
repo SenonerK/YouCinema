@@ -4,9 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:YouCineUI"
-             mc:Ignorable="d" >
-        <StackPanel Margin="8" MouseLeftButtonUp="StackPanel_MouseLeftButtonUp">
-            <Image Height="158" Width="107" x:Name="img" />
-            <TextBlock Text="Matrix" HorizontalAlignment="Center" x:Name="txt" FontFamily="Segoe UI Light" FontSize="16" Margin="0,5" />
-        </StackPanel>
+             mc:Ignorable="d" BorderThickness="1" BorderBrush="Black" Margin="10" >
+    <StackPanel Margin="8">
+        <Canvas Height="158" Width="107">
+            <Image Height="158" Width="107" x:Name="img" />            
+        </Canvas>
+        <TextBlock Text="[Film]" HorizontalAlignment="Center" x:Name="txt" FontFamily="Segoe UI Light" FontSize="16" Margin="0,5" />
+    </StackPanel>
 </UserControl>

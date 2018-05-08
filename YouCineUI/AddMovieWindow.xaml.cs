@@ -33,6 +33,7 @@ namespace YouCineUI
             if (ofd.ShowDialog().Value)
             {
                 img.Source = new BitmapImage(new Uri(ofd.FileName));
+                img.DataContext = ofd.FileName;
             }
         }
 
@@ -55,14 +56,15 @@ namespace YouCineUI
                 && !string.IsNullOrEmpty(txt_charge_day.Text) && !string.IsNullOrWhiteSpace(txt_charge_day.Text)
                 && !string.IsNullOrEmpty(txt_description.Text) && !string.IsNullOrWhiteSpace(txt_description.Text)
                 && lst_cast.Items.Count > 0
-                && img.Source != null)
+                && img.Source != null
+                && int.Parse(txt_year.Text)<2100 && int.Parse(txt_year.Text)>1700)
             {
                 MovieModel movie = Config.Connection.CreateMovie(
                     txt_name.Text,
                     txt_description.Text,
                     new DateTime(int.Parse(txt_year.Text), 1, 1),
                     double.Parse(txt_charge_day.Text),
-                    Util.getJPGFromImageControl(img.Source as BitmapImage)
+                    Util.FileToByte(img.DataContext as string)
                     );
 
                 Config.Cinema.Movies.Add(movie);

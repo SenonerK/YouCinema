@@ -6,8 +6,6 @@ namespace YouCineUI
 {
     public partial class MovieViewControl : UserControl
     {
-        public event EventHandler Click;
-
         private MovieModel _movie;
         public MovieModel Movie
         {
@@ -23,11 +21,6 @@ namespace YouCineUI
         public MovieViewControl()
         {
             InitializeComponent();
-        }
-
-        private void StackPanel_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            Click?.Invoke(this, e);
         }
     }
 }

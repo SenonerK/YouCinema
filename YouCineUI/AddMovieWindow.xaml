@@ -74,10 +74,15 @@
             
             <TextBlock Text="Darsteller" />
             <TextBlock Text="Rolle" Grid.Column="1" />
-            <ComboBox Margin="5" x:Name="cmb_actor" ItemsSource="{Binding}" Grid.Row="1">
+            <ComboBox FontSize="18" x:Name="cmb_actor" ItemsSource="{Binding}" Grid.Row="1">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
+                            <StackPanel.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="FontSize" Value="18" />
+                                </Style>
+                            </StackPanel.Resources>
                             <TextBlock FontSize="18" Text="{Binding FirstName}" />
                             <TextBlock FontSize="18" Text=", " />
                             <TextBlock FontSize="18" Text="{Binding LastName}" />
@@ -92,9 +97,14 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Actor, Converter={StaticResource ID2Actor}}" />
+                            <StackPanel.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="FontSize" Value="18" />
+                                </Style>
+                            </StackPanel.Resources>
+                            <TextBlock FontWeight="Bold" Text="{Binding Actor, Converter={StaticResource ID2Actor}}" />
                             <TextBlock Text=" als " />
-                            <TextBlock Text="{Binding Role}" />                            
+                            <TextBlock FontWeight="Bold" Text="{Binding Role}" />                            
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
