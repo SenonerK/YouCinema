@@ -60,9 +60,7 @@
                     <Button Content="Hinzufügen" FontSize="18" HorizontalAlignment="Left" Click="Button_Movie_Add_Click" />
                     <DockPanel Grid.Row="1" Margin="10">
                         <Button FontSize="30" Content="‹" DockPanel.Dock="Left" Click="Button_Movie_Prev_Click" />
-                        <WrapPanel x:Name="wrap_movies">
-                            <local:MovieViewControl />
-                        </WrapPanel>
+                        <WrapPanel x:Name="wrap_movies" />
                         <Button Click="Button_Movie_Next_Click" FontSize="30" Content="›" DockPanel.Dock="Right" HorizontalAlignment="Right" />
                     </DockPanel>
                 </Grid>

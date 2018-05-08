@@ -31,5 +31,11 @@ namespace YouCineLibrary.DataAccess
         bool DeleteCustomer(string ID);
 
         CustomerModel CreateCustomer(string firstname, string lastname, string email);
+
+        ActorModel CreateActor(string firstname, string lastname, DateTime birthday, double rating);
+
+        MovieModel CreateMovie(string name, string description, DateTime year, double price, byte[] photo);
+
+        MovieParticipationModel CreateMovieParticipation(string movieID, string ActorID, string Role);
     }
 }

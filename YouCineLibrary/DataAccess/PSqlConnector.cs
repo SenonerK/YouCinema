@@ -107,7 +107,7 @@ namespace YouCineLibrary.DataAccess
                     MovieDescription = r[2].ToString(),
                     MovieName = r[3].ToString(),
                     Published = DateTime.Parse(r[4].ToString()),
-                    Price = decimal.Parse(r[5].ToString())
+                    Price = double.Parse(r[5].ToString())
                 });
             }
 
@@ -302,6 +302,59 @@ namespace YouCineLibrary.DataAccess
                 LastName = lastname,
                 Email = email,
                 Credit = 0,
+            };
+        }
+
+        public ActorModel CreateActor(string firstname, string lastname, DateTime birthday, double rating)
+        {
+            NpgsqlCommand cmd = new NpgsqlCommand("INSERT INTO yc_cast (firstname,lastname,date_of_birth,imdb_rating) VALUES (@FName, @LName, @Birth, @Rating) RETURNING id");
+            cmd.Parameters.Add(new NpgsqlParameter("FName", firstname));
+            cmd.Parameters.Add(new NpgsqlParameter("LName", lastname));
+            cmd.Parameters.Add(new NpgsqlParameter("Birth", birthday));
+            cmd.Parameters.Add(new NpgsqlParameter("Rating", rating));
+
+            return new ActorModel()
+            {
+                ID = Query(cmd).Rows[0][0].ToString(),
+                FirstName = firstname,
+                LastName = lastname,
+                BirthDate = birthday,
+                Rating = rating
+            };
+        }
+
+        public MovieModel CreateMovie(string name, string description, DateTime year, double price, byte[] photo)
+        {
+            NpgsqlCommand cmd = new NpgsqlCommand("INSERT INTO yc_movie (m_name,description,publishing_year,price_per_day_borrow, thumbnail) VALUES (@Name, @Desc, @Year, @Price, @Photo) RETURNING id");
+            cmd.Parameters.Add(new NpgsqlParameter("Name", name));
+            cmd.Parameters.Add(new NpgsqlParameter("Desc", description));
+            cmd.Parameters.Add(new NpgsqlParameter("Year", year));
+            cmd.Parameters.Add(new NpgsqlParameter("Price", price));
+            cmd.Parameters.Add(new NpgsqlParameter("Photo", photo));
+
+            return new MovieModel()
+            {
+                ID = Query(cmd).Rows[0][0].ToString(),
+                MovieName = name,
+                MovieDescription = description,
+                Published = year,
+                Price = price,
+                Image = photo
+            };
+        }
+
+        public MovieParticipationModel CreateMovieParticipation(string movieID, string ActorID, string Role)
+        {
+            NpgsqlCommand cmd = new NpgsqlCommand("INSERT INTO yc_participations (fk_actor,fk_movie,movie_role) VALUES (@Actor, @Movie, @Role)");
+            cmd.Parameters.Add(new NpgsqlParameter("Actor", ActorID));
+            cmd.Parameters.Add(new NpgsqlParameter("Movie", movieID));
+            cmd.Parameters.Add(new NpgsqlParameter("Role", Role));
+
+            return new MovieParticipationModel()
+            {
+                Actor = ActorID,
+                Movie = movieID,
+                Role = Role
             };
         }
     }

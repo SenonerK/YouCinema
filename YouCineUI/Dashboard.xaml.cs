@@ -23,6 +23,7 @@ namespace YouCineUI
         {
             InitializeComponent();
             ShowDBUI();
+
         }
 
         private void ShowDBUI()
@@ -52,7 +53,8 @@ namespace YouCineUI
         {
             Config.LoadCinema();
 
-            LoadCustomers();            
+            LoadCustomers();
+            LoadMovies();
         }
 
         #region ProjectionsTab
@@ -76,6 +78,19 @@ namespace YouCineUI
 
         #region MovieTab
 
+        private void LoadMovies()
+        {
+            wrap_movies.Children.Clear();
+            foreach (MovieModel m in Config.Cinema.Movies)
+            {
+                MovieViewControl mv = new MovieViewControl()
+                {
+                    Movie = m
+                };
+                wrap_movies.Children.Add(mv);
+            }
+        }
+
         private void Button_Movie_Prev_Click(object sender, RoutedEventArgs e)
         {
 
@@ -88,7 +103,8 @@ namespace YouCineUI
 
         private void Button_Movie_Add_Click(object sender, RoutedEventArgs e)
         {
-            new AddMovieWindow().Show();
+            new AddMovieWindow().ShowDialog();
+            LoadMovies();
         }
 
         #endregion

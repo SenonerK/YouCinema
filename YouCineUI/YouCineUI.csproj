@@ -57,6 +57,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AddActorWindow.xaml.cs">
+      <DependentUpon>AddActorWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="AddCustomerWindow.xaml.cs">
       <DependentUpon>AddCustomerWindow.xaml</DependentUpon>
     </Compile>
@@ -66,7 +69,12 @@
     <Compile Include="AuditViewControl.xaml.cs">
       <DependentUpon>AuditViewControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="StringToActorConverter.cs" />
     <Compile Include="Util.cs" />
+    <Page Include="AddActorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="AddCustomerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -138,5 +146,6 @@
       <Name>YouCineLibrary</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:YouCineUI"
         mc:Ignorable="d"
-        Title="Kunde hinzufügen" Height="260" Width="300" ResizeMode="CanMinimize">
+        Title="Kunde hinzufügen" Height="250" Width="300" ResizeMode="CanMinimize">
     <Grid>
         <StackPanel Margin="10">
             <StackPanel.Resources>

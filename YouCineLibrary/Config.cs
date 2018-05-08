@@ -48,7 +48,7 @@ namespace YouCineLibrary
 
         public static AuditoriumModel GetAuditById(string v)
         {
-            foreach(AuditoriumModel a in Cinema.Auditoriums)
+            foreach (AuditoriumModel a in Cinema.Auditoriums)
                 if (a.ID == v)
                     return a;
 
@@ -59,6 +59,15 @@ namespace YouCineLibrary
         {
             foreach (MovieModel m in Cinema.Movies)
                 if (m.ID == v)
+                    return m;
+
+            return null;
+        }
+
+        public static ActorModel GetActorById(string ID)
+        {
+            foreach (ActorModel m in Cinema.Actors)
+                if (m.ID == ID)
                     return m;
 
             return null;
