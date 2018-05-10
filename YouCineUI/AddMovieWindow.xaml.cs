@@ -64,7 +64,7 @@ namespace YouCineUI
                     txt_description.Text,
                     new DateTime(int.Parse(txt_year.Text), 1, 1),
                     double.Parse(txt_charge_day.Text),
-                    Util.FileToByte(img.DataContext as string)
+                    Util.FileToImage(img.DataContext as string)
                     );
 
                 Config.Cinema.Movies.Add(movie);

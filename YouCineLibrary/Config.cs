@@ -11,7 +11,13 @@ namespace YouCineLibrary
     public static class Config
     {
         public static IDataConnection Connection { get; private set; }
+        public static MediaServer MediaConnection { get; private set; }
         public static Models.CinemaModel Cinema { get; set; }
+
+        public static void InitializeMediaConnection(string mediaserver)
+        {
+            MediaConnection = new MediaServer(mediaserver);
+        }
 
         public static void InitializeConnection(ConnectionType type, string CnnString)
         {
@@ -29,6 +35,7 @@ namespace YouCineLibrary
         public static void RemoveConnection()
         {
             Connection = null;
+            MediaConnection = null;
         }
 
         public static void LoadCinema()
@@ -71,6 +78,19 @@ namespace YouCineLibrary
                     return m;
 
             return null;
+        }
+
+        public static List<MovieParticipationModel> GetParticipationsByMovie(string movieID)
+        {
+            List<MovieParticipationModel> ret = new List<MovieParticipationModel>();
+
+            foreach(MovieParticipationModel m in Cinema.MovieParticipations)
+            {
+                if (m.Movie == movieID)
+                    ret.Add(m);
+            }
+
+            return ret;
         }
     }
 }

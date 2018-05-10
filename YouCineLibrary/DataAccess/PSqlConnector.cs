@@ -104,7 +104,7 @@ namespace YouCineLibrary.DataAccess
                 ret.Add(new MovieModel()
                 {
                     ID = r[0].ToString(),
-                    Image = (byte[])r[1],
+                    Image = r[1].ToString(),
                     MovieDescription = r[2].ToString(),
                     MovieName = r[3].ToString(),
                     Published = DateTime.Parse(r[4].ToString()),
@@ -324,14 +324,16 @@ namespace YouCineLibrary.DataAccess
             };
         }
 
-        public MovieModel CreateMovie(string name, string description, DateTime year, double price, byte[] photo)
+        public MovieModel CreateMovie(string name, string description, DateTime year, double price, System.Drawing.Image photo)
         {
+            string pid = Config.MediaConnection.UploadImage(photo);
+
             NpgsqlCommand cmd = new NpgsqlCommand("INSERT INTO yc_movie (m_name,description,publishing_year,price_per_day_borrow, thumbnail) VALUES (@Name, @Desc, @Year, @Price, @Photo) RETURNING id");
             cmd.Parameters.Add(new NpgsqlParameter("Name", name));
             cmd.Parameters.Add(new NpgsqlParameter("Desc", description));
             cmd.Parameters.Add(new NpgsqlParameter("Year", year));
             cmd.Parameters.Add(new NpgsqlParameter("Price", price));
-            cmd.Parameters.Add(new NpgsqlParameter("Photo", photo));
+            cmd.Parameters.Add(new NpgsqlParameter("Photo", pid));
 
             DataTable tmp = Query(cmd);
             if(tmp==null)
@@ -344,7 +346,7 @@ namespace YouCineLibrary.DataAccess
                 MovieDescription = description,
                 Published = year,
                 Price = price,
-                Image = photo
+                Image = pid
             };
         }
 
@@ -363,6 +365,26 @@ namespace YouCineLibrary.DataAccess
                 Actor = ActorID,
                 Movie = movieID,
                 Role = Role
+            };
+        }
+
+        public AuditoriumModel CreateAuditorium(string name, int cols, int rows)
+        {
+            NpgsqlCommand cmd = new NpgsqlCommand("INSERT INTO yc_rooms (room_name,max_col,max_row) VALUES (@Name, @Col, @Row) RETURNING roomid");
+            cmd.Parameters.Add(new NpgsqlParameter("Name", name));
+            cmd.Parameters.Add(new NpgsqlParameter("Col", cols));
+            cmd.Parameters.Add(new NpgsqlParameter("Row", rows));
+
+            DataTable tmp = Query(cmd);
+            if (tmp == null)
+                throw new Exception("Die Datenbank hat NULL zurückgegeben bei yc_rooms!");
+
+            return new AuditoriumModel()
+            {
+                ID = tmp.Rows[0][0].ToString(),
+                Room = name,
+                Columns = cols,
+                Rows = rows
             };
         }
     }

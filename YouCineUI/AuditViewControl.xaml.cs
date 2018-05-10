@@ -17,6 +17,7 @@ namespace YouCineUI
                 lbl_name.Text = value.Room;
                 lbl_places.Text = (value.Columns * value.Rows).ToString();
                 /// TODO - anzeigen welcher movie gard läuft
+                lbl_mov_name.Text = "/";
                 _auditorium = value;
             }
         }

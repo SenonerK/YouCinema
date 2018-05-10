@@ -29,7 +29,7 @@ namespace YouCineUI
         private void ShowDBUI()
         {
             // Window anzeigen zur auswahl der Dantenbankverbindung
-            if (new DBConnections().ShowDialog().Value && Config.Connection.TestConnection())
+            if (new DBConnections().ShowDialog().Value && Config.Connection.TestConnection() && Config.MediaConnection.TestConnection())
                 LoadUI();
             else
             {
@@ -55,6 +55,7 @@ namespace YouCineUI
 
             LoadCustomers();
             LoadMovies();
+            LoadAudits();
         }
 
         #region ProjectionsTab
@@ -87,18 +88,14 @@ namespace YouCineUI
                 {
                     Movie = m
                 };
+                mv.Click += new EventHandler(Movie_Click);
                 wrap_movies.Children.Add(mv);
             }
         }
 
-        private void Button_Movie_Prev_Click(object sender, RoutedEventArgs e)
+        private void Movie_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void Button_Movie_Next_Click(object sender, RoutedEventArgs e)
-        {
-
+            new MovieViewWindow(sender as MovieModel).ShowDialog();
         }
 
         private void Button_Movie_Add_Click(object sender, RoutedEventArgs e)
@@ -150,9 +147,19 @@ namespace YouCineUI
 
         #region AuditoriumTab
 
+        private void LoadAudits()
+        {
+            wrap_rooms.Children.Clear();
+            foreach(AuditoriumModel m in Config.Cinema.Auditoriums)
+            {
+                wrap_rooms.Children.Add(new AuditViewControl() { Auditorium = m });
+            }
+        }
+
         private void Button_Audit_Add_Click(object sender, RoutedEventArgs e)
         {
-
+            new AddAuditWindow().ShowDialog();
+            LoadAudits();
         }
 
         private void Button_Audit_Del_Click(object sender, RoutedEventArgs e)

@@ -10,28 +10,24 @@ namespace YouCineUI
 {
     public static class Util
     {
-        public static System.Windows.Media.ImageSource ByteToImageSource(byte[] img)
+        public static System.Windows.Media.ImageSource ImageToImageSource(System.Drawing.Image image)
         {
-            try
+            using (var ms = new MemoryStream())
             {
-                using (var ms = new MemoryStream(img))
-                {
-                    var bitmapImage = new BitmapImage();
-                    bitmapImage.BeginInit();
-                    bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                    bitmapImage.StreamSource = ms;
-                    bitmapImage.EndInit();
+                var bitmap = new BitmapImage();
+                bitmap.BeginInit();
 
-                    return bitmapImage;
-                }
-            } catch (Exception ex) { return null; }
+                image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                ms.Seek(0, SeekOrigin.Begin);
+                bitmap.StreamSource = ms;
+                bitmap.EndInit();
+                return bitmap;
+            }
         }
 
-        public static byte[] FileToByte(string path)
+        public static System.Drawing.Image FileToImage(string path)
         {
-            FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read);
-            BinaryReader br = new BinaryReader(fs);
-            return br.ReadBytes((int)fs.Length);
+            return System.Drawing.Image.FromFile(path);
         }
     }
 }

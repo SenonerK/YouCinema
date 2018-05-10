@@ -39,6 +39,7 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -50,6 +51,7 @@
     <Compile Include="Config.cs" />
     <Compile Include="DataAccess\ConnectionType.cs" />
     <Compile Include="DataAccess\IDataConnection.cs" />
+    <Compile Include="DataAccess\MediaServer.cs" />
     <Compile Include="DataAccess\PSqlConnector.cs" />
     <Compile Include="Models\ActorModel.cs" />
     <Compile Include="Models\AuditoriumModel.cs" />

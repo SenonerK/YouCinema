@@ -42,7 +42,8 @@ namespace YouCineUI
                     .Add(new ConnectionStringSettings()
                     {
                         Name = txt_name.Text,
-                        ConnectionString = txt_cnnString.Text
+                        ConnectionString = txt_cnnString.Text,
+                        ProviderName = txt_mserver.Text
                     });
                 // Configuration speichern
                 config.Save();
@@ -54,6 +55,9 @@ namespace YouCineUI
                 // Die connection string in der config laden und fenster schliessen
                 YouCineLibrary.Config.InitializeConnection(
                     YouCineLibrary.DataAccess.ConnectionType.PostgreSQL, txt_cnnString.Text);
+
+                YouCineLibrary.Config.InitializeMediaConnection(txt_mserver.Text);
+
                 this.DialogResult = true;
                 this.Close();
             }
@@ -65,8 +69,10 @@ namespace YouCineUI
         {
             if (!string.IsNullOrEmpty(txt_name.Text)
                 && !string.IsNullOrEmpty(txt_cnnString.Text)
+                && !string.IsNullOrEmpty(txt_mserver.Text)
                 && !string.IsNullOrWhiteSpace(txt_name.Text)
-                && !string.IsNullOrWhiteSpace(txt_cnnString.Text))
+                && !string.IsNullOrWhiteSpace(txt_cnnString.Text)
+                && !string.IsNullOrWhiteSpace(txt_mserver.Text))
                 return true;
 
             return false;
@@ -80,6 +86,7 @@ namespace YouCineUI
                 ConnectionStringSettings s = ConfigurationManager.ConnectionStrings[lst_db.SelectedItem.ToString()];
                 txt_name.Text = s.Name;
                 txt_cnnString.Text = s.ConnectionString;
+                txt_mserver.Text = s.ProviderName;
             }
         }
 
@@ -93,6 +100,7 @@ namespace YouCineUI
             lst_db.IsEnabled = false;
             txt_cnnString.IsReadOnly = false;
             txt_name.IsReadOnly = false;
+            txt_mserver.IsReadOnly = false;
         }
 
         private void Button_Test_Click(object sender, RoutedEventArgs e)
@@ -102,9 +110,10 @@ namespace YouCineUI
             {
                 // In die config dieser app laden
                 YouCineLibrary.Config.InitializeConnection(YouCineLibrary.DataAccess.ConnectionType.PostgreSQL, txt_cnnString.Text);
+                YouCineLibrary.Config.InitializeMediaConnection(txt_mserver.Text);
 
                 // Verbindug testen
-                if (YouCineLibrary.Config.Connection.TestConnection())
+                if (YouCineLibrary.Config.Connection.TestConnection() && YouCineLibrary.Config.MediaConnection.TestConnection())
                     MessageBox.Show("Verbindugn konnte aufgebaut werden!", "YouCinema", MessageBoxButton.OK, MessageBoxImage.Information);
                 else
                     MessageBox.Show("Es konnte keine Verbindug hergestellt werden!", "Fehler!", MessageBoxButton.OK, MessageBoxImage.Error);

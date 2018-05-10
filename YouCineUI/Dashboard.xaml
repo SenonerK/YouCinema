@@ -81,9 +81,7 @@
                         <!--<Button Content="Entfernen" Click="Button_Audit_Del_Click" />-->
                     </StackPanel>
 
-                    <WrapPanel Grid.Row="1" Margin="15">
-                        <local:AuditViewControl />
-                    </WrapPanel>
+                    <WrapPanel x:Name="wrap_rooms" Grid.Row="1" Margin="15" />
                 </Grid>
             </TabItem>
             <TabItem Header="Kunden">

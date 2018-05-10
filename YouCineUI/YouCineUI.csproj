@@ -60,6 +60,9 @@
     <Compile Include="AddActorWindow.xaml.cs">
       <DependentUpon>AddActorWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AddAuditWindow.xaml.cs">
+      <DependentUpon>AddAuditWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="AddCustomerWindow.xaml.cs">
       <DependentUpon>AddCustomerWindow.xaml</DependentUpon>
     </Compile>
@@ -69,9 +72,16 @@
     <Compile Include="AuditViewControl.xaml.cs">
       <DependentUpon>AuditViewControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MovieViewWindow.xaml.cs">
+      <DependentUpon>MovieViewWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="StringToActorConverter.cs" />
     <Compile Include="Util.cs" />
     <Page Include="AddActorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AddAuditWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -104,6 +114,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MovieViewControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MovieViewWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -146,6 +160,10 @@
       <Name>YouCineLibrary</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Resources\noposter.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

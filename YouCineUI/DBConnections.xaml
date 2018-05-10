@@ -25,6 +25,8 @@
                 <RowDefinition Height="20" />
                 <RowDefinition Height="20" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="20" />
+                <RowDefinition Height="20" />
                 <RowDefinition Height="30" />
                 <RowDefinition Height="30" />
             </Grid.RowDefinitions>
@@ -33,8 +35,10 @@
             <TextBox Grid.Row="1" x:Name="txt_name" IsReadOnly="True" />
             <TextBlock Text="Connection string:" Grid.Row="2" />
             <TextBox Grid.Row="3" x:Name="txt_cnnString" IsReadOnly="True" TextWrapping="Wrap" />
-            <Button Content="Verbindung testen" VerticalAlignment="Bottom" Grid.Row="4" Click="Button_Test_Click" Margin="0,5"/>
-            <Button Content="OK" VerticalAlignment="Bottom" Grid.Row="5" Click="Button_OK_Click" Margin="0,5"/>
+            <TextBlock Text="Medienserver:" Grid.Row="4"/>
+            <TextBox Grid.Row="5" x:Name="txt_mserver" IsReadOnly="True" />
+            <Button Content="Verbindung testen" VerticalAlignment="Bottom" Grid.Row="6" Click="Button_Test_Click" Margin="0,5"/>
+            <Button Content="OK" VerticalAlignment="Bottom" Grid.Row="7" Click="Button_OK_Click" Margin="0,5"/>
         </Grid>
     </Grid>
 </Window>
