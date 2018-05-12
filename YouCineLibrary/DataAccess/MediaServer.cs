@@ -62,7 +62,7 @@ namespace YouCineLibrary.DataAccess
                 img.Save(Path.Combine(tempFolder, ID));
                 _webClient = new WebClient();
                 _webClient.Headers.Add("Content-Type", "binary/octet-stream");
-                byte[] result = _webClient.UploadFile(_serverUrl + "/upload.php", "POST", Path.Combine(tempFolder, ID));
+                byte[] result = _webClient.UploadFile(MediaServer + "/upload.php", "POST", Path.Combine(tempFolder, ID));
                 return ID;
             }
             catch
@@ -76,7 +76,7 @@ namespace YouCineLibrary.DataAccess
             Image img = null;
             try
             {
-                webRequest = (HttpWebRequest)WebRequest.Create(_serverUrl + "download.php?imgID=" + ID);
+                webRequest = (HttpWebRequest)WebRequest.Create(_serverUrl + "/download.php?imgID=" + ID);
                 webRequest.Timeout = 30000;
                 webRequest.AllowWriteStreamBuffering = true;
                 _webResponse = (HttpWebResponse)webRequest.GetResponse();
