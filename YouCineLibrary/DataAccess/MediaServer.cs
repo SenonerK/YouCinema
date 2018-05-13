@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using System.Drawing;
 using System.Net;
 using System.IO;
@@ -11,59 +7,55 @@ namespace YouCineLibrary.DataAccess
 {
     public class MediaServer
     {
+        public const int IDLenght = 5;
         public string Mediaserver { get; set; }
-        private WebClient _webClient;
-        private Random rnd = new Random();
-        private readonly string _serverUrl, tempFolder = Path.GetTempPath();
-        private HttpWebRequest _webRequest, webRequest;
-        private HttpWebResponse _webResponse;
-        private StreamReader _streamReader;
-        private Stream _stream, _streamAwn;
-        private char[] alphabet = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+
+        private readonly char[] alphabet = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
 
         public MediaServer(string server)
         {
             Mediaserver = server;
         }
 
-        public bool TestConnection()
+        public string GETRequest(string url)
         {
             try
             {
-                _webRequest = (HttpWebRequest)WebRequest.Create(Mediaserver);
-                byte[] buffer = Encoding.ASCII.GetBytes("&task=test");
-                _webRequest.Timeout = 30000;
-                _webRequest.Method = "POST";
-                _webRequest.ContentType = "application/x-www-form-urlencoded";
-                _webRequest.ContentLength = buffer.Length;
-                _stream = _webRequest.GetRequestStream();
-                _stream.Write(buffer, 0, buffer.Length);
-                _stream.Close();
-                _webResponse = (HttpWebResponse)_webRequest.GetResponse();
-                _streamAwn = _webResponse.GetResponseStream();
-                _streamReader = new StreamReader(_streamAwn);
-                return _streamReader.ReadToEnd() == "OK" ? true : false;
+                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(url);
+                webRequest.Timeout = 30000;
+                webRequest.Method = "GET";
+
+                return new StreamReader(
+                    webRequest
+                    .GetResponse()
+                    .GetResponseStream())
+                    .ReadToEnd();
             }
             catch
             {
-                return false;
+                return null;
             }
+        }
+
+        public bool TestConnection()
+        {
+            return GETRequest(Mediaserver + "?task=test")=="OK";
         }
 
         public string UploadImage(Image img)
         {
             try
             {
-                string ID = "";
-                for (var i = 0; i < 5; i++)
-                {
-                    ID += alphabet[rnd.Next(0, alphabet.Length)];
-                }
-                img.Save(Path.Combine(tempFolder, ID));
-                _webClient = new WebClient();
+                string tmppath = Path.Combine(Path.GetTempPath(), "yctmpimg");
+                img.Save(tmppath);
+
+                WebClient _webClient = new WebClient();
                 _webClient.Headers.Add("Content-Type", "binary/octet-stream");
-                byte[] result = _webClient.UploadFile(MediaServer + "/upload.php", "POST", Path.Combine(tempFolder, ID));
-                return ID;
+                string res = Encoding.ASCII.GetString(_webClient.UploadFile(Mediaserver + "/?task=upload", "POST", tmppath));
+
+                File.Delete(tmppath);
+
+                return res=="ERROR" ? null : res;
             }
             catch
             {
@@ -74,20 +66,21 @@ namespace YouCineLibrary.DataAccess
         public Image GetImage(string ID)
         {
             Image img = null;
+
             try
             {
-                webRequest = (HttpWebRequest)WebRequest.Create(_serverUrl + "/download.php?imgID=" + ID);
+                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(Mediaserver + "/?task=download&imgID=" + ID);
                 webRequest.Timeout = 30000;
                 webRequest.AllowWriteStreamBuffering = true;
-                _webResponse = (HttpWebResponse)webRequest.GetResponse();
-                _stream = _webResponse.GetResponseStream();
-                img = Image.FromStream(_stream);
-                _webResponse.Close();
+
+                HttpWebResponse webResponse = (HttpWebResponse)webRequest.GetResponse();
+                Stream stream = webResponse.GetResponseStream();
+
+                img = Image.FromStream(stream);
+
+                webResponse.Close();
             }
-            catch
-            {
-                return null;
-            }
+            catch { }
 
             return img;
         }

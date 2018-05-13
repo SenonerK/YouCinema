@@ -25,7 +25,7 @@ namespace YouCineUI
         {
             OpenFileDialog ofd = new OpenFileDialog()
             {
-                Filter = "JPEG|*.jpg",
+                Filter = "PNG|*.png",
                 ValidateNames = true,
                 Multiselect = false
             };
