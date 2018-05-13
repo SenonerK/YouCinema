@@ -26,8 +26,7 @@ namespace YouCineUI
 
             lst_cast.DataContext = YouCineLibrary.Config.GetParticipationsByMovie(movie.ID);
 
-            System.Drawing.Image i = YouCineLibrary.Config.MediaConnection.GetImage(movie.Image);
-            if (i != null) { img.Source = Util.ImageToImageSource(i); } else { img.Source = new BitmapImage(new Uri("pack://siteoforigin:,,,/Resources/noposter.jpg")); }
+            img.Source = Util.ImageIDToBitmapImage(movie.Image);
         }
 
         private void Button_Cancel_Click(object sender, RoutedEventArgs e)

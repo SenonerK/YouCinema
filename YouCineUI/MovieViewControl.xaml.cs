@@ -15,9 +15,8 @@ namespace YouCineUI
             get { return _movie; }
             set
             {
-                System.Drawing.Image i =YouCineLibrary.Config.MediaConnection.GetImage(value.Image);
                 txt.Text = value.MovieName;
-                if(i!=null) { img.Source = Util.ImageToImageSource(i); } else { img.Source = new BitmapImage(new Uri("pack://siteoforigin:,,,/Resources/noposter.jpg")); }
+                img.Source = Util.ImageIDToBitmapImage(value.Image);
                 _movie = value;
             }
         }
