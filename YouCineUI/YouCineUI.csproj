@@ -69,6 +69,9 @@
     <Compile Include="AddMovieWindow.xaml.cs">
       <DependentUpon>AddMovieWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AddProjectionWindow.xaml.cs">
+      <DependentUpon>AddProjectionWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="AuditViewControl.xaml.cs">
       <DependentUpon>AuditViewControl.xaml</DependentUpon>
     </Compile>
@@ -76,6 +79,8 @@
       <DependentUpon>MovieViewWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="StringToActorConverter.cs" />
+    <Compile Include="StringToAuditConverter.cs" />
+    <Compile Include="StringToMovieConverter.cs" />
     <Compile Include="Util.cs" />
     <Page Include="AddActorWindow.xaml">
       <SubType>Designer</SubType>
@@ -90,6 +95,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="AddMovieWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AddProjectionWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

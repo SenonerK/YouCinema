@@ -92,5 +92,18 @@ namespace YouCineLibrary
 
             return ret;
         }
+
+        public static List<ProjectionModel> SearchProjectionByDate(DateTime from, DateTime to)
+        {
+            List<ProjectionModel> ret = new List<ProjectionModel>();
+
+            foreach(ProjectionModel m in Cinema.Projections)
+            {
+                if (m.Date >= from && m.Date <= to)
+                    ret.Add(m);
+            }
+
+            return ret;
+        }
     }
 }

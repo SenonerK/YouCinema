@@ -39,5 +39,9 @@ namespace YouCineLibrary.DataAccess
         MovieParticipationModel CreateMovieParticipation(string movieID, string ActorID, string Role);
 
         AuditoriumModel CreateAuditorium(string name, int cols, int rows);
+
+        ProjectionModel CreateProjection(DateTime datum, double price, string movieID, string auditID);
+
+        bool DeleteProjection(string ID);
     }
 }

@@ -387,6 +387,35 @@ namespace YouCineLibrary.DataAccess
                 Rows = rows
             };
         }
+
+        public ProjectionModel CreateProjection(DateTime date, double price, string movieID, string auditID)
+        {
+            NpgsqlCommand cmd = new NpgsqlCommand("INSERT INTO yc_demonstration (ticket_prices, demonstration_date, fk_movieid, fk_roomid) VALUES (@Price, @Date, @Movie, @Room) RETURNING demonstrationid");
+            cmd.Parameters.Add(new NpgsqlParameter("Price", price));
+            cmd.Parameters.Add(new NpgsqlParameter("Date", date));
+            cmd.Parameters.Add(new NpgsqlParameter("Movie", movieID));
+            cmd.Parameters.Add(new NpgsqlParameter("Room", auditID));
+
+            DataTable tmp = Query(cmd);
+            if (tmp == null)
+                throw new Exception("Die Datenbank hat NULL zurückgegeben bei yc_demonstration!");
+
+            return new ProjectionModel()
+            {
+                ID = tmp.Rows[0][0].ToString(),
+                 Date = date,
+                 Price = price,
+                 Movie = movieID,
+                 Auditorium = auditID
+            };
+        }
+
+        public bool DeleteProjection(string ID)
+        {
+            NpgsqlCommand cmd = new NpgsqlCommand("DELETE FROM yc_demonstration WHERE demonstrationid=@ID");
+            cmd.Parameters.Add(new NpgsqlParameter("ID", ID));
+            return Execute(cmd);
+        }
     }
 }
 /// TODO - patchen lol min 30 min warten

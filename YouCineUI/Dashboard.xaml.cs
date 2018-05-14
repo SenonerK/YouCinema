@@ -23,7 +23,6 @@ namespace YouCineUI
         {
             InitializeComponent();
             ShowDBUI();
-
         }
 
         private void ShowDBUI()
@@ -56,23 +55,59 @@ namespace YouCineUI
             LoadCustomers();
             LoadMovies();
             LoadAudits();
+            LoadProjections();
         }
 
         #region ProjectionsTab
 
+        private void LoadProjections()
+        {
+            dg_projections.DataContext = Config.Cinema.Projections;
+            dg_projections.Items.Refresh();
+        }
+
         private void Button_Projections_Search_Click(object sender, RoutedEventArgs e)
         {
-
+            if ((sender as Button).Content.ToString() == "Suche"
+                && dte_von_projections.SelectedDate.HasValue
+                && dte_bis_projections.SelectedDate.HasValue
+                && dte_bis_projections.SelectedDate.Value >= dte_von_projections.SelectedDate.Value)
+            {
+                (sender as Button).Content = "Alle";
+                dte_von_projections.IsEnabled = false;
+                dte_bis_projections.IsEnabled = false;
+                dg_projections.DataContext = Config.SearchProjectionByDate(
+                    dte_von_projections.SelectedDate.Value,
+                    dte_bis_projections.SelectedDate.Value
+                    );
+            }
+            else if ((sender as Button).Content.ToString() == "Alle")
+            {
+                (sender as Button).Content = "Suche";
+                dte_von_projections.IsEnabled = true;
+                dte_bis_projections.IsEnabled = true;
+                LoadProjections();
+            }
+            else
+                MessageBox.Show("Wählen Sie bitte den Zeitabschnitt!", "Fehler!", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         private void btn_projections_del_Click(object sender, RoutedEventArgs e)
         {
-
+            if(dg_projections.SelectedIndex > -1)
+            {
+                if (Config.Connection.DeleteProjection((dg_projections.SelectedItem as ProjectionModel).ID))
+                    Config.Cinema.Projections.Remove(dg_projections.SelectedItem as ProjectionModel);
+                else
+                    MessageBox.Show("Fehler auf Seiten der Dantenbank. Möglicherweise existieren noch Reservierungen für diese Vorführung!");
+            }
+            LoadProjections();
         }
 
         private void Button_Projections_Add_Click(object sender, RoutedEventArgs e)
         {
-
+            new AddProjectionWindow().ShowDialog();
+            LoadProjections();
         }
 
         #endregion
@@ -111,10 +146,6 @@ namespace YouCineUI
         private void LoadCustomers()
         {
             dg_customers.DataContext = Config.Cinema.Customers;
-            dg_customers.CanUserAddRows = false;
-            dg_customers.CanUserDeleteRows = false;
-            dg_customers.CanUserResizeRows = false;
-            dg_customers.IsReadOnly = true;
         }
 
         private void UpdateCustomers()
@@ -132,7 +163,7 @@ namespace YouCineUI
         {
             if (dg_customers.SelectedIndex > -1)
             {
-                if ((dg_customers.SelectedItem as CustomerModel).Delete())
+                if (Config.Connection.DeleteCustomer((dg_customers.SelectedItem as CustomerModel).ID))
                     Config.Cinema.Customers.Remove(dg_customers.SelectedItem as CustomerModel);
                 else
                     MessageBox.Show("Fehler auf Seiten der Dantenbank. Möglicherweise existieren irgendwo noch Einträge die mit diesem Kunden in verbindung stehen!");
@@ -160,11 +191,6 @@ namespace YouCineUI
         {
             new AddAuditWindow().ShowDialog();
             LoadAudits();
-        }
-
-        private void Button_Audit_Del_Click(object sender, RoutedEventArgs e)
-        {
-
         }
 
         #endregion

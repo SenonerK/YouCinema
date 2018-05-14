@@ -7,10 +7,5 @@
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public double Credit { get; set; }
-
-        public bool Delete()
-        {
-            return Config.Connection.DeleteCustomer(ID);
-        }
     }
 }
