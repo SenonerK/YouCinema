@@ -416,6 +416,27 @@ namespace YouCineLibrary.DataAccess
             cmd.Parameters.Add(new NpgsqlParameter("ID", ID));
             return Execute(cmd);
         }
+
+        public ReservationModel CreateReservation(string customerID, string projectionID, int col, int row)
+        {
+            NpgsqlCommand cmd = new NpgsqlCommand("INSERT INTO yc_reserved (fk_customerid, fk_demonstrationid, pos) VALUES (@Customer, @Projection, @Position) RETURNING ticketid");
+            cmd.Parameters.Add(new NpgsqlParameter("Customer", customerID));
+            cmd.Parameters.Add(new NpgsqlParameter("Projection", projectionID));
+            cmd.Parameters.Add(new NpgsqlParameter("Position", new int[] { col, row }));
+
+            DataTable tmp = Query(cmd);
+            if (tmp == null)
+                throw new Exception("Die Datenbank hat NULL zurückgegeben bei yc_reserved!");
+
+            return new ReservationModel()
+            {
+                ID = tmp.Rows[0][0].ToString(),
+                Customer = customerID,
+                Projection = projectionID,
+                Column = col,
+                Row = row
+            };
+        }
     }
 }
 /// TODO - patchen lol min 30 min warten

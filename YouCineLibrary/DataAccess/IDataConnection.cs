@@ -43,5 +43,7 @@ namespace YouCineLibrary.DataAccess
         ProjectionModel CreateProjection(DateTime datum, double price, string movieID, string auditID);
 
         bool DeleteProjection(string ID);
+
+        ReservationModel CreateReservation(string customerID, string projectionID, int col, int row);
     }
 }

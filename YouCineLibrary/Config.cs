@@ -80,6 +80,24 @@ namespace YouCineLibrary
             return null;
         }
 
+        public static CustomerModel GetCustomerById(string ID)
+        {
+            foreach (CustomerModel m in Cinema.Customers)
+                if (m.ID == ID)
+                    return m;
+
+            return null;
+        }
+
+        public static ProjectionModel GetProjectionById(string ID)
+        {
+            foreach (ProjectionModel m in Cinema.Projections)
+                if (m.ID == ID)
+                    return m;
+
+            return null;
+        }
+
         public static List<MovieParticipationModel> GetParticipationsByMovie(string movieID)
         {
             List<MovieParticipationModel> ret = new List<MovieParticipationModel>();
@@ -102,8 +120,40 @@ namespace YouCineLibrary
                 if (m.Date >= from && m.Date <= to)
                     ret.Add(m);
             }
-
             return ret;
+        }
+
+        public static List<ReservationModel> SearchReservationByDate(DateTime from, DateTime to)
+        {
+            List<ReservationModel> ret = new List<ReservationModel>();
+
+            foreach (ReservationModel m in Cinema.Reservations)
+            {
+                ProjectionModel tmp = GetProjectionById(m.Projection);
+                if (tmp.Date >= from && tmp.Date <= to)
+                    ret.Add(m);
+            }
+            return ret;
+        }
+
+        public static bool ReservationPositionExists(string audit, int col, int row)
+        {
+            AuditoriumModel tmp = Config.GetAuditById(audit);
+            if (col == 0 || row == 0)
+                return false;
+
+            return (row <= tmp.Rows && col <= tmp.Columns);
+        }
+
+        public static bool ReservationPositionIsTaken(string proj, int row, int col)
+        {
+            foreach (ReservationModel m in Cinema.Reservations)
+            {
+                if (m.Projection == proj && m.Row == row && m.Column == col)
+                    return true;
+            }
+
+            return false;
         }
     }
 }

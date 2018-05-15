@@ -56,6 +56,7 @@ namespace YouCineUI
             LoadMovies();
             LoadAudits();
             LoadProjections();
+            LoadReservations();
         }
 
         #region ProjectionsTab
@@ -197,14 +198,42 @@ namespace YouCineUI
 
         #region ReservationsTab
 
+        private void LoadReservations()
+        {
+            dg_reservations.DataContext = Config.Cinema.Reservations;
+            dg_reservations.Items.Refresh();
+        }
+
         private void Button_Reservations_Search_Click(object sender, RoutedEventArgs e)
         {
-
+            if ((sender as Button).Content.ToString() == "Suche"
+                && dte_von_reservations.SelectedDate.HasValue
+                && dte_bis_reservations.SelectedDate.HasValue
+                && dte_bis_reservations.SelectedDate.Value >= dte_von_reservations.SelectedDate.Value)
+            {
+                (sender as Button).Content = "Alle";
+                dte_von_reservations.IsEnabled = false;
+                dte_bis_reservations.IsEnabled = false;
+                dg_reservations.DataContext = Config.SearchReservationByDate(
+                    dte_von_reservations.SelectedDate.Value,
+                    dte_bis_reservations.SelectedDate.Value);
+            }
+            else if ((sender as Button).Content.ToString() == "Alle")
+            {
+                (sender as Button).Content = "Suche";
+                dte_von_reservations.IsEnabled = true;
+                dte_bis_reservations.IsEnabled = true;
+                LoadReservations();
+            }
+            else
+                MessageBox.Show("Wählen Sie bitte den Zeitabschnitt!", "Fehler!", MessageBoxButton.OK, MessageBoxImage.Error);
+            
         }
 
         private void Button_Reservations_Add_Click(object sender, RoutedEventArgs e)
         {
-
+            new AddReservationWindow().ShowDialog();
+            LoadReservations();
         }
 
         private void Button_Reservations_Del_Click(object sender, RoutedEventArgs e)

@@ -9,6 +9,9 @@
     <Window.Resources>
         <local:StringToMovieConverter x:Key="StringToMovieConverter"/>
         <local:StringToAuditConverter x:Key="StringToAuditConverter" />
+        <local:StringToCustomerConverter x:Key="StringToCustomerConverter" />
+        <local:StringToProjectionConverter x:Key="StringToProjectionConverter" />
+
         <Style TargetType="{x:Type Button}" x:Key="RightPanel">
             <Setter Property="FontSize" Value="18" />
             <Setter Property="Margin" Value="10,5" />
@@ -152,7 +155,14 @@
                         <Button Content="Suche" Margin="10,0,0,0" FontSize="18" Click="Button_Reservations_Search_Click"/>
                     </StackPanel>
 
-                    <DataGrid Grid.Row="1" x:Name="dg_reservations" />
+                    <DataGrid Grid.Row="1" x:Name="dg_reservations" ItemsSource="{Binding}" AutoGenerateColumns="False"  CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Width="*" Header="Kunde" Binding="{Binding Customer, Converter={StaticResource StringToCustomerConverter}}"/>
+                            <DataGridTextColumn Width="*" Header="Vorführung" Binding="{Binding Projection, Converter={StaticResource StringToProjectionConverter}}" />
+                            <DataGridTextColumn CanUserResize="False" Header="Spalte" Binding="{Binding Column}" />
+                            <DataGridTextColumn CanUserResize="False" Header="Reihe" Binding="{Binding Row}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
 
                     <StackPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Center">
                         <Button Content="Hinzufügen" Style="{StaticResource RightPanel}" Click="Button_Reservations_Add_Click" />
