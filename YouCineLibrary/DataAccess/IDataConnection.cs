@@ -34,7 +34,7 @@ namespace YouCineLibrary.DataAccess
 
         ActorModel CreateActor(string firstname, string lastname, DateTime birthday, double rating);
 
-        MovieModel CreateMovie(string name, string description, DateTime year, double price, System.Drawing.Image photo);
+        MovieModel CreateMovie(string name, string description, DateTime year, double price, System.Drawing.Image photo, DateTime duration);
 
         MovieParticipationModel CreateMovieParticipation(string movieID, string ActorID, string Role);
 

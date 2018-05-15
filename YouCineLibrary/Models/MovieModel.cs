@@ -10,5 +10,6 @@ namespace YouCineLibrary.Models
         public DateTime Published { get; set; }
         public double Price { get; set; }
         public string Image { get; set; }
+        public DateTime Duration { get; set; }
     }
 }

@@ -155,5 +155,21 @@ namespace YouCineLibrary
 
             return false;
         }
+
+        public static MovieModel GetRunningMovieByAudit(string auditID)
+        {
+            foreach (ProjectionModel m in Cinema.Projections)
+            {
+                if (m.Auditorium == auditID && m.Date < DateTime.Now && DateTime.Now < (AddTime(m.Date, GetMovieById(m.Movie).Duration)))
+                    return GetMovieById(m.Movie);
+            }
+
+            return null;
+        }
+
+        private static DateTime AddTime(DateTime date, DateTime duration)
+        {
+            return date.AddSeconds((duration.Hour*60*60)+(duration.Minute*60)+duration.Second);
+        }
     }
 }

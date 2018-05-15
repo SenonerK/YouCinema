@@ -33,7 +33,7 @@
         {
             $ID = "";
             do {
-                for ($i = 0; $i < 5; $i++)
+                for ($i = 0; $i < 10; $i++)
                 {
                     $ID = $ID . $alphabet[rand(0, count($alphabet)-1)];
                 }

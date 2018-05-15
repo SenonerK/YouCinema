@@ -94,7 +94,7 @@ namespace YouCineLibrary.DataAccess
         {
             List<MovieModel> ret = new List<MovieModel>();
 
-            DataTable tmp = Query("SELECT id,thumbnail,description,m_name,publishing_year,price_per_day_borrow FROM yc_movie");
+            DataTable tmp = Query("SELECT id,thumbnail,description,m_name,publishing_year,price_per_day_borrow,duration FROM yc_movie");
 
             if (tmp == null)
                 throw new Exception("Die Datenbank hat NULL zurückgegeben bei yc_movie!");
@@ -108,7 +108,8 @@ namespace YouCineLibrary.DataAccess
                     MovieDescription = r[2].ToString(),
                     MovieName = r[3].ToString(),
                     Published = DateTime.Parse(r[4].ToString()),
-                    Price = double.Parse(r[5].ToString())
+                    Price = double.Parse(r[5].ToString()),
+                    Duration = DateTime.Parse(r[6].ToString())
                 });
             }
 
@@ -324,16 +325,17 @@ namespace YouCineLibrary.DataAccess
             };
         }
 
-        public MovieModel CreateMovie(string name, string description, DateTime year, double price, System.Drawing.Image photo)
+        public MovieModel CreateMovie(string name, string description, DateTime year, double price, System.Drawing.Image photo, DateTime duration)
         {
             string pid = Config.MediaConnection.UploadImage(photo);
 
-            NpgsqlCommand cmd = new NpgsqlCommand("INSERT INTO yc_movie (m_name,description,publishing_year,price_per_day_borrow, thumbnail) VALUES (@Name, @Desc, @Year, @Price, @Photo) RETURNING id");
+            NpgsqlCommand cmd = new NpgsqlCommand("INSERT INTO yc_movie (m_name,description,publishing_year,price_per_day_borrow, thumbnail,duration) VALUES (@Name, @Desc, @Year, @Price, @Photo,@Lenght) RETURNING id");
             cmd.Parameters.Add(new NpgsqlParameter("Name", name));
             cmd.Parameters.Add(new NpgsqlParameter("Desc", description));
             cmd.Parameters.Add(new NpgsqlParameter("Year", year));
             cmd.Parameters.Add(new NpgsqlParameter("Price", price));
             cmd.Parameters.Add(new NpgsqlParameter("Photo", pid));
+            cmd.Parameters.Add(new NpgsqlParameter("Lenght", duration));
 
             DataTable tmp = Query(cmd);
             if(tmp==null)
@@ -346,7 +348,8 @@ namespace YouCineLibrary.DataAccess
                 MovieDescription = description,
                 Published = year,
                 Price = price,
-                Image = pid
+                Image = pid,
+                Duration = duration
             };
         }
 
