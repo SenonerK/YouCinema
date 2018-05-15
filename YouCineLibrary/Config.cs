@@ -38,19 +38,27 @@ namespace YouCineLibrary
             MediaConnection = null;
         }
 
-        public static void LoadCinema()
+        public static bool LoadCinema()
         {
             Cinema = new CinemaModel();
 
-            // Alles von der DB laden. Bitte Reihenfolge nicht ändern
-            Cinema.Movies = Connection.LoadMovies();
-            Cinema.Auditoriums = Connection.LoadAuditoriums();
-            Cinema.Actors = Connection.LoadActors();
-            Cinema.Customers = Connection.LoadCustomers();
-            Cinema.Projections = Connection.LoadProjections();
-            Cinema.Reservations = Connection.LoadReservations();
-            Cinema.Borrows = Connection.LoadBorrows();
-            Cinema.MovieParticipations = Connection.LoadMovieParticipations();
+            try
+            {
+                // Alles von der DB laden. Bitte Reihenfolge nicht ändern
+                Cinema.Movies = Connection.LoadMovies();
+                Cinema.Auditoriums = Connection.LoadAuditoriums();
+                Cinema.Actors = Connection.LoadActors();
+                Cinema.Customers = Connection.LoadCustomers();
+                Cinema.Projections = Connection.LoadProjections();
+                Cinema.Reservations = Connection.LoadReservations();
+                Cinema.Borrows = Connection.LoadBorrows();
+                Cinema.MovieParticipations = Connection.LoadMovieParticipations();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public static AuditoriumModel GetAuditById(string v)
@@ -167,9 +175,22 @@ namespace YouCineLibrary
             return null;
         }
 
-        private static DateTime AddTime(DateTime date, DateTime duration)
+        public static DateTime AddTime(DateTime date, DateTime duration)
         {
             return date.AddSeconds((duration.Hour*60*60)+(duration.Minute*60)+duration.Second);
+        }
+
+        public static bool isAuditOccupied(string auditID, DateTime from, DateTime to)
+        {
+            foreach (ProjectionModel m in Cinema.Projections)
+            {
+                DateTime tmpto = AddTime(m.Date, GetMovieById(m.Movie).Duration);
+
+                if (m.Auditorium==auditID && ((from >= m.Date && from <= tmpto) || (to>=m.Date && to<=tmpto) || (m.Date>=from && m.Date<=to) || (tmpto>=from && tmpto<=to)))
+                    return true;
+            }
+
+            return false;
         }
     }
 }

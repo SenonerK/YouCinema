@@ -179,6 +179,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\load.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\noposter.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

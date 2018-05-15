@@ -25,184 +25,199 @@
         </Style>
     </Window.Resources>
     <Grid>
-        <TabControl FontSize="18">
-            <TabItem Header="Home">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-            </TabItem>
-            <TabItem Header="Vorführungen">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="4*" />
-                        <ColumnDefinition Width="1*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="50" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
+            <ToolBar ToolBarTray.IsLocked="True" Background="White">
+                <Menu FontSize="15">
+                    <MenuItem Header="Kino">
+                        <MenuItem Header="Neu laden" Click="MenuItem_Reload_Click" />
+                        <MenuItem Header="Beenden" Click="MenuItem_Close_Click" />
+                    </MenuItem>
+                </Menu>
+            </ToolBar>
+            <TabControl FontSize="15" Grid.Row="1">
+                <TabItem Header="Vorführungen">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="4*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
 
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="Von:" Style="{StaticResource topbar}" />
-                        <DatePicker x:Name="dte_von_projections" />
-                        <TextBlock Text="Bis:" Style="{StaticResource topbar}" />
-                        <DatePicker x:Name="dte_bis_projections" />
-                        <Button Content="Suche" Margin="10,0,0,0" FontSize="18" Click="Button_Projections_Search_Click"/>
-                    </StackPanel>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="Von:" Style="{StaticResource topbar}" />
+                            <DatePicker x:Name="dte_von_projections" />
+                            <TextBlock Text="Bis:" Style="{StaticResource topbar}" />
+                            <DatePicker x:Name="dte_bis_projections" />
+                            <Button Content="Suche" Margin="10,0,0,0" FontSize="18" Click="Button_Projections_Search_Click"/>
+                        </StackPanel>
 
-                    <DataGrid Grid.Row="1" x:Name="dg_projections" ItemsSource="{Binding}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" IsReadOnly="True">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Width="*" Header="Film" Binding="{Binding Movie, Converter={StaticResource StringToMovieConverter}}" />
-                            <DataGridTextColumn Width="*" Header="Saal" Binding="{Binding Auditorium, Converter={StaticResource StringToAuditConverter}}" />
-                            <DataGridTextColumn CanUserResize="False" Width="auto" MinWidth="40" Header="Datum" Binding="{Binding Date, StringFormat=\{0:dd/MM/yyyy hh:mm\}}" />
-                            <DataGridTemplateColumn CanUserResize="False" SortMemberPath="Price" Width="75" Header="Eintrittspreis">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding Price}" />
-                                            <TextBlock Text=" €" />
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
+                        <DataGrid Grid.Row="1" x:Name="dg_projections" ItemsSource="{Binding}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" IsReadOnly="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Width="*" Header="Film" Binding="{Binding Movie, Converter={StaticResource StringToMovieConverter}}" />
+                                <DataGridTextColumn Width="*" Header="Saal" Binding="{Binding Auditorium, Converter={StaticResource StringToAuditConverter}}" />
+                                <DataGridTextColumn CanUserResize="False" Width="auto" MinWidth="40" Header="Datum" Binding="{Binding Date, StringFormat=\{0:dd/MM/yyyy hh:mm tt\}}" />
+                                <DataGridTemplateColumn CanUserResize="False" SortMemberPath="Price" Width="95" Header="Eintrittspreis">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding Price}" />
+                                                <TextBlock Text=" €" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
 
-                    <StackPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Center">
-                        <Button Content="Hinzufügen" Style="{StaticResource RightPanel}" Click="Button_Projections_Add_Click" />
-                        <Button Content="Entfernen" Style="{StaticResource RightPanel}" x:Name="btn_projections_del" Click="btn_projections_del_Click" />
-                    </StackPanel>
-                </Grid>
-            </TabItem>
-            <TabItem Header="Filme">
-                <Grid Margin="10">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="40" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <Button Content="Hinzufügen" FontSize="18" HorizontalAlignment="Left" Click="Button_Movie_Add_Click" />
-                    <ScrollViewer Grid.Row="1">
-                        <WrapPanel x:Name="wrap_movies" />
-                    </ScrollViewer>
-                </Grid>
-            </TabItem>
-            <TabItem Header="Säle">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="50" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
+                        <StackPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Center">
+                            <Button Content="Hinzufügen" Style="{StaticResource RightPanel}" Click="Button_Projections_Add_Click" />
+                            <Button Content="Entfernen" Style="{StaticResource RightPanel}" x:Name="btn_projections_del" Click="btn_projections_del_Click" />
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Filme">
+                    <Grid Margin="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Button Content="Hinzufügen" FontSize="18" HorizontalAlignment="Left" Click="Button_Movie_Add_Click" />
+                        <ScrollViewer Grid.Row="1">
+                            <WrapPanel x:Name="wrap_movies" />
+                        </ScrollViewer>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Säle">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
 
-                    <StackPanel Orientation="Horizontal" Margin="10">
-                        <StackPanel.Resources>
-                            <Style TargetType="Button">
-                                <Setter Property="FontSize" Value="18" />
-                                <Setter Property="Margin" Value="0,0,10,0" />
-                            </Style>
-                        </StackPanel.Resources>
-                        <Button Content="Hinzufügen" Click="Button_Audit_Add_Click" />
-                        <!--<Button Content="Entfernen" Click="Button_Audit_Del_Click" />-->
-                    </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="10">
+                            <StackPanel.Resources>
+                                <Style TargetType="Button">
+                                    <Setter Property="FontSize" Value="18" />
+                                    <Setter Property="Margin" Value="0,0,10,0" />
+                                </Style>
+                            </StackPanel.Resources>
+                            <Button Content="Hinzufügen" Click="Button_Audit_Add_Click" />
+                            <!--<Button Content="Entfernen" Click="Button_Audit_Del_Click" />-->
+                        </StackPanel>
 
-                    <WrapPanel x:Name="wrap_rooms" Grid.Row="1" Margin="15" />
-                </Grid>
-            </TabItem>
-            <TabItem Header="Kunden">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="4*" />
-                        <ColumnDefinition Width="1*" />
-                    </Grid.ColumnDefinitions>
+                        <WrapPanel x:Name="wrap_rooms" Grid.Row="1" Margin="15" />
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Kunden">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="4*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
 
-                    <DataGrid x:Name="dg_customers" ItemsSource="{Binding}" AutoGenerateColumns="False"  CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" IsReadOnly="True">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Width="*" Header="Vorname" Binding="{Binding FirstName}" />
-                            <DataGridTextColumn Width="*" Header="Nachname" Binding="{Binding LastName}" />
-                            <DataGridTextColumn Width="*" Header="E-Mail" Binding="{Binding Email}" />
-                            <DataGridTemplateColumn Width="70" SortMemberPath="Credit" CanUserResize="False" Header="Kontostand">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding Credit}" />
-                                            <TextBlock Text=" €" />
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
+                        <DataGrid x:Name="dg_customers" ItemsSource="{Binding}" AutoGenerateColumns="False"  CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" IsReadOnly="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Width="*" Header="Vorname" Binding="{Binding FirstName}" />
+                                <DataGridTextColumn Width="*" Header="Nachname" Binding="{Binding LastName}" />
+                                <DataGridTextColumn Width="*" Header="E-Mail" Binding="{Binding Email}" />
+                                <DataGridTemplateColumn Width="87" SortMemberPath="Credit" CanUserResize="False" Header="Kontostand">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding Credit}" />
+                                                <TextBlock Text=" €" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
 
-                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                        <Button Content="Hinzufügen" Style="{StaticResource RightPanel}" Click="Button_Customers_Add_Click" />
-                        <Button Content="Entfernen" Style="{StaticResource RightPanel}" x:Name="btn_customer_del" Click="Button_Customers_Del_Click" />
-                    </StackPanel>
-                </Grid>
-            </TabItem>
-            <TabItem Header="Reservierungen">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="4*" />
-                        <ColumnDefinition Width="1*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="50" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <Button Content="Hinzufügen" Style="{StaticResource RightPanel}" Click="Button_Customers_Add_Click" />
+                            <Button Content="Entfernen" Style="{StaticResource RightPanel}" x:Name="btn_customer_del" Click="Button_Customers_Del_Click" />
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Reservierungen">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="4*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
 
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="Von:" Style="{StaticResource topbar}" />
-                        <DatePicker x:Name="dte_von_reservations" />
-                        <TextBlock Text="Bis:" Style="{StaticResource topbar}" />
-                        <DatePicker x:Name="dte_bis_reservations" />
-                        <Button Content="Suche" Margin="10,0,0,0" FontSize="18" Click="Button_Reservations_Search_Click"/>
-                    </StackPanel>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="Von:" Style="{StaticResource topbar}" />
+                            <DatePicker x:Name="dte_von_reservations" />
+                            <TextBlock Text="Bis:" Style="{StaticResource topbar}" />
+                            <DatePicker x:Name="dte_bis_reservations" />
+                            <Button Content="Suche" Margin="10,0,0,0" FontSize="18" Click="Button_Reservations_Search_Click"/>
+                        </StackPanel>
 
-                    <DataGrid Grid.Row="1" x:Name="dg_reservations" ItemsSource="{Binding}" AutoGenerateColumns="False"  CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" IsReadOnly="True">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Width="*" Header="Kunde" Binding="{Binding Customer, Converter={StaticResource StringToCustomerConverter}}"/>
-                            <DataGridTextColumn Width="*" Header="Vorführung" Binding="{Binding Projection, Converter={StaticResource StringToProjectionConverter}}" />
-                            <DataGridTextColumn CanUserResize="False" Header="Spalte" Binding="{Binding Column}" />
-                            <DataGridTextColumn CanUserResize="False" Header="Reihe" Binding="{Binding Row}" />
-                        </DataGrid.Columns>
-                    </DataGrid>
+                        <DataGrid Grid.Row="1" x:Name="dg_reservations" ItemsSource="{Binding}" AutoGenerateColumns="False"  CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" IsReadOnly="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Width="*" Header="Kunde" Binding="{Binding Customer, Converter={StaticResource StringToCustomerConverter}}"/>
+                                <DataGridTextColumn Width="*" Header="Vorführung" Binding="{Binding Projection, Converter={StaticResource StringToProjectionConverter}}" />
+                                <DataGridTextColumn CanUserResize="False" Header="Spalte" Binding="{Binding Column}" />
+                                <DataGridTextColumn CanUserResize="False" Header="Reihe" Binding="{Binding Row}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
 
-                    <StackPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Center">
-                        <Button Content="Hinzufügen" Style="{StaticResource RightPanel}" Click="Button_Reservations_Add_Click" />
-                        <Button Content="Entfernen" Style="{StaticResource RightPanel}" x:Name="btn_reservations_del" Click="Button_Reservations_Del_Click" />
-                    </StackPanel>
-                </Grid>
-            </TabItem>
-            <TabItem Header="Verleih">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="4*" />
-                        <ColumnDefinition Width="1*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="50*" />
-                        <RowDefinition Height="10" />
-                        <RowDefinition Height="50" />
-                        <RowDefinition Height="45*" />
-                    </Grid.RowDefinitions>
+                        <StackPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Center">
+                            <Button Content="Hinzufügen" Style="{StaticResource RightPanel}" Click="Button_Reservations_Add_Click" />
+                            <Button Content="Entfernen" Style="{StaticResource RightPanel}" x:Name="btn_reservations_del" Click="Button_Reservations_Del_Click" />
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Verleih">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="4*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50*" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="50" />
+                            <RowDefinition Height="45*" />
+                        </Grid.RowDefinitions>
 
-                    <DataGrid x:Name="dg_borrows" />
+                        <DataGrid x:Name="dg_borrows" />
 
-                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                        <Button Content="Verleihen" Style="{StaticResource RightPanel}" Click="Button_Borrow_Add_Click" />
-                        <Button x:Name="btn_borrow_del" Content="Rückgabe" Style="{StaticResource RightPanel}" Click="Button_Borrow_Del_Click" />
-                    </StackPanel>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <Button Content="Verleihen" Style="{StaticResource RightPanel}" Click="Button_Borrow_Add_Click" />
+                            <Button x:Name="btn_borrow_del" Content="Rückgabe" Style="{StaticResource RightPanel}" Click="Button_Borrow_Del_Click" />
+                        </StackPanel>
 
-                    <Grid Background="Black" Margin="0,8,0,0" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" />
+                        <Grid Background="Black" Margin="0,8,0,0" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" />
 
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Row="2">
-                        <TextBlock Text="Von:" Style="{StaticResource topbar}" />
-                        <DatePicker x:Name="dte_von_borrows" />
-                        <TextBlock Text="Bis:" Style="{StaticResource topbar}" />
-                        <DatePicker x:Name="dte_bis_borrows" />
-                        <Button Content="Suche" Margin="10,0,0,0" FontSize="18" Click="Button_Borrow_Search_Click"/>
-                    </StackPanel>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Row="2">
+                            <TextBlock Text="Von:" Style="{StaticResource topbar}" />
+                            <DatePicker x:Name="dte_von_borrows" />
+                            <TextBlock Text="Bis:" Style="{StaticResource topbar}" />
+                            <DatePicker x:Name="dte_bis_borrows" />
+                            <Button Content="Suche" Margin="10,0,0,0" FontSize="18" Click="Button_Borrow_Search_Click"/>
+                        </StackPanel>
 
-                    <DataGrid Grid.Row="3" x:Name="dg_borrows_log" />
-                </Grid>
-            </TabItem>
-        </TabControl>
+                        <DataGrid Grid.Row="3" x:Name="dg_borrows_log" />
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Grid>
+        <Grid x:Name="loading" Background="White">
+            <MediaElement Source="pack://siteoforigin:,,,/Resources/load.gif" UnloadedBehavior="Manual" MediaEnded="Loading_MediaEnded" LoadedBehavior="Play" />
+        </Grid>
     </Grid>
 </Window>

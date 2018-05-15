@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:YouCineUI"
         mc:Ignorable="d"
-        Title="Film" Height="300" Width="500">
+        Title="Film" MinHeight="320" MinWidth="450" Height="340" Width="540">
     <Window.Resources>
         <local:StringToActorConverter x:Key="ID2Actor" />
     </Window.Resources>
@@ -46,6 +46,8 @@
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <TextBlock Text="Name" Grid.ColumnSpan="2" />
@@ -54,8 +56,10 @@
             <TextBlock Text="€/Tag" Grid.Column="1" Grid.Row="2" />
             <TextBox IsReadOnly="True" Grid.Row="3" x:Name="txt_year" />
             <TextBox IsReadOnly="True" Grid.Column="1" Grid.Row="3" x:Name="txt_charge_day" />
-            <TextBlock Text="Beschreibung" Grid.ColumnSpan="2" Grid.Row="4" />
-            <TextBox IsReadOnly="True" x:Name="txt_description" Grid.Row="5" Grid.ColumnSpan="2" TextWrapping="Wrap" />
+            <TextBlock Text="Dauer:" Grid.ColumnSpan="2" Grid.Row="4" />
+            <TextBox x:Name="txt_duration" Grid.ColumnSpan="2" Grid.Row="5" IsReadOnly="True"/>
+            <TextBlock Text="Beschreibung" Grid.ColumnSpan="2" Grid.Row="6" />
+            <TextBox IsReadOnly="True" x:Name="txt_description" Grid.Row="7" Grid.ColumnSpan="2" TextWrapping="Wrap" />
         </Grid>
 
         <Grid Grid.Column="2" Margin="10,0,0,0">

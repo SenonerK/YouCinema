@@ -40,7 +40,7 @@ namespace YouCineLibrary.DataAccess
                     return true;
                 }
             }
-            catch (Exception ex) { return false; }
+            catch { return false; }
         }
 
         public bool Execute(NpgsqlCommand cmd)
@@ -58,7 +58,7 @@ namespace YouCineLibrary.DataAccess
                     return true;
                 }
             }
-            catch (Exception ex) { return false; }
+            catch { return false; }
         }
 
         public bool Execute(string cmd)
@@ -82,7 +82,7 @@ namespace YouCineLibrary.DataAccess
                     return data;
                 }
             }
-            catch (Exception ex) { return null; }
+            catch { return null; }
         }
 
         public DataTable Query(string cmd)
@@ -439,6 +439,20 @@ namespace YouCineLibrary.DataAccess
                 Column = col,
                 Row = row
             };
+        }
+
+        public bool DeleteReservation(string ID)
+        {
+            NpgsqlCommand cmd = new NpgsqlCommand("DELETE FROM yc_reserved WHERE ticketid=@ID");
+            cmd.Parameters.Add(new NpgsqlParameter("ID", ID));
+            return Execute(cmd);
+        }
+
+        public bool ClearProjections()
+        {
+            /// TODO - erst löschen wenn film vorbei ist nicht wenn es anfängt
+            NpgsqlCommand cmd = new NpgsqlCommand("DELETE FROM yc_reserved WHERE fk_demonstrationid IN (SELECT demonstrationid FROM yc_demonstration WHERE demonstration_date<now()); DELETE FROM yc_demonstration WHERE demonstration_date<now();");
+            return Execute(cmd);
         }
     }
 }

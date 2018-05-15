@@ -14,15 +14,27 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using YouCineLibrary;
 using YouCineLibrary.Models;
+using System.Windows.Threading;
 
 namespace YouCineUI
 {
     public partial class Dashboard : Window
     {
+        DispatcherTimer AuditTimer, GeneralTimer;
+
         public Dashboard()
         {
+            AuditTimer = new DispatcherTimer();
+            AuditTimer.Interval = TimeSpan.FromSeconds(5);
+            AuditTimer.Tick += new EventHandler(LoadAudits);
+
             InitializeComponent();
             ShowDBUI();
+
+            GeneralTimer = new DispatcherTimer();
+            GeneralTimer.Interval = TimeSpan.FromSeconds(30);
+            GeneralTimer.Tick += new EventHandler(LoadUI);
+            GeneralTimer.Start();
         }
 
         private void ShowDBUI()
@@ -48,16 +60,37 @@ namespace YouCineUI
             }
         }
 
-        private void LoadUI()
+        private async void LoadUI(object s=null, EventArgs e=null)
         {
-            Config.LoadCinema();
+            loading.Visibility = Visibility.Visible;
 
-            LoadCustomers();
-            LoadMovies();
-            LoadAudits();
-            LoadProjections();
-            LoadReservations();
+            AuditTimer.Stop();
+
+            if (await Task.Run(()=>Config.LoadCinema()))
+            {
+                loading.Visibility = Visibility.Hidden;
+
+                // Alle vergangene Vorführungen und deren Reservierungen löschen
+                Config.Connection.ClearProjections();
+
+                LoadCustomers();
+                LoadMovies();
+                LoadAudits();
+                LoadProjections();
+                LoadReservations();
+
+                AuditTimer.Start();
+            }
+            else
+            {
+                MessageBox.Show("Die Verbindug zur Datenbank steht nicht mehr!", "Fehler!", MessageBoxButton.OK, MessageBoxImage.Error);
+                ShowDBUI();
+            }
         }
+
+        private void MenuItem_Reload_Click(object sender, RoutedEventArgs e) => LoadUI();
+
+        private void MenuItem_Close_Click(object sender, RoutedEventArgs e) => Close();
 
         #region ProjectionsTab
 
@@ -72,7 +105,8 @@ namespace YouCineUI
             if ((sender as Button).Content.ToString() == "Suche"
                 && dte_von_projections.SelectedDate.HasValue
                 && dte_bis_projections.SelectedDate.HasValue
-                && dte_bis_projections.SelectedDate.Value >= dte_von_projections.SelectedDate.Value)
+                && dte_bis_projections.SelectedDate.Value >= dte_von_projections.SelectedDate.Value
+                && dte_bis_projections.SelectedDate.Value != dte_von_projections.SelectedDate.Value)
             {
                 (sender as Button).Content = "Alle";
                 dte_von_projections.IsEnabled = false;
@@ -109,6 +143,12 @@ namespace YouCineUI
         {
             new AddProjectionWindow().ShowDialog();
             LoadProjections();
+        }
+
+        private void Loading_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            (sender as MediaElement).Position = TimeSpan.FromMilliseconds(1);
+            (sender as MediaElement).Play();
         }
 
         #endregion
@@ -179,7 +219,7 @@ namespace YouCineUI
 
         #region AuditoriumTab
 
-        private void LoadAudits()
+        private void LoadAudits(object sender=null, EventArgs e=null)
         {
             wrap_rooms.Children.Clear();
             foreach(AuditoriumModel m in Config.Cinema.Auditoriums)
@@ -209,7 +249,8 @@ namespace YouCineUI
             if ((sender as Button).Content.ToString() == "Suche"
                 && dte_von_reservations.SelectedDate.HasValue
                 && dte_bis_reservations.SelectedDate.HasValue
-                && dte_bis_reservations.SelectedDate.Value >= dte_von_reservations.SelectedDate.Value)
+                && dte_bis_reservations.SelectedDate.Value >= dte_von_reservations.SelectedDate.Value
+                && dte_bis_reservations.SelectedDate.Value != dte_von_reservations.SelectedDate.Value)
             {
                 (sender as Button).Content = "Alle";
                 dte_von_reservations.IsEnabled = false;
@@ -238,7 +279,17 @@ namespace YouCineUI
 
         private void Button_Reservations_Del_Click(object sender, RoutedEventArgs e)
         {
+            if (dg_reservations.SelectedIndex > -1)
+            {
+                if (Config.Connection.DeleteReservation((dg_reservations.SelectedItem as ReservationModel).ID))
+                    Config.Cinema.Reservations.Remove(dg_reservations.SelectedItem as ReservationModel);
+                else
+                    MessageBox.Show("Fehler auf Seiten der Dantenbank!", "Fehler!", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else
+                MessageBox.Show("Wählen Sie einen Kunden aus!");
 
+            LoadReservations();
         }
 
         #endregion

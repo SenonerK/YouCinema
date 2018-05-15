@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using YouCineLibrary;
 
 namespace YouCineUI
 {
@@ -35,19 +36,28 @@ namespace YouCineUI
                 && !string.IsNullOrWhiteSpace(txt_price.Text) && !string.IsNullOrEmpty(txt_price.Text)
                 && new Regex("^[0-9]{0,2}:[0-9]{0,2}$").IsMatch(txt_time.Text))
             {
-                YouCineLibrary.Config.Cinema.Projections.Add(
-                    YouCineLibrary.Config.Connection.CreateProjection(
-                        dp_date.SelectedDate.Value.AddMinutes(
+                DateTime dte = dp_date.SelectedDate.Value.AddMinutes(
                             (double.Parse(txt_time.Text.Split(':')[0]) * 60)
                             + (double.Parse(txt_time.Text.Split(':')[1]))
-                            ),
-                        double.Parse(txt_price.Text),
-                        (cmb_movie.SelectedItem as YouCineLibrary.Models.MovieModel).ID,
-                        (cmb_audit.SelectedItem as YouCineLibrary.Models.AuditoriumModel).ID
-                        ));
+                            );
+                string mov = (cmb_movie.SelectedItem as YouCineLibrary.Models.MovieModel).ID;
+                string audit = (cmb_audit.SelectedItem as YouCineLibrary.Models.AuditoriumModel).ID;
 
-                DialogResult = true;
-                Close();
+                if (!Config.isAuditOccupied(audit, dte, Config.AddTime(dte, Config.GetMovieById(mov).Duration)))
+                {
+                    if (dte > DateTime.Now)
+                    {
+                        Config.Cinema.Projections.Add(
+                            Config.Connection.CreateProjection(dte, double.Parse(txt_price.Text), mov, audit));
+
+                        DialogResult = true;
+                        Close();
+                    }
+                    else
+                        MessageBox.Show("Sie können keine Vorführung in der Vergangenheit erstellen", "Fehler!", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else
+                    MessageBox.Show("Zu der ausgewählten Zeit wird schon ein Film in diesem Saal laufen.", "Fehler!", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
                 MessageBox.Show("Ungültige Eingabe!", "Fehler!", MessageBoxButton.OK, MessageBoxImage.Error);

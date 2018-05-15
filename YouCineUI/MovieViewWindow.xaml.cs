@@ -23,6 +23,7 @@ namespace YouCineUI
             txt_year.Text = movie.Published.Year.ToString();
             txt_description.Text = movie.MovieDescription;
             txt_charge_day.Text = movie.Price.ToString();
+            txt_duration.Text = movie.Duration.ToString("hh:mm:ss");
 
             lst_cast.DataContext = YouCineLibrary.Config.GetParticipationsByMovie(movie.ID);
 

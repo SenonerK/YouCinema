@@ -45,5 +45,9 @@ namespace YouCineLibrary.DataAccess
         bool DeleteProjection(string ID);
 
         ReservationModel CreateReservation(string customerID, string projectionID, int col, int row);
+
+        bool DeleteReservation(string ID);
+
+        bool ClearProjections();
     }
 }
