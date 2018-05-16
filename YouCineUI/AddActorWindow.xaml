@@ -29,7 +29,7 @@
         <TextBox x:Name="txt_lname" PreviewTextInput="Text_PreviewTextInput" />
         <TextBlock Text="Geburtsdatum:" />
         <DatePicker x:Name="dp_birthday" />
-        <TextBlock Text="IMDB Bewertung:" />
+        <TextBlock Text="IMDB Bewertung: (zb. 5,0 / 3,4)" />
         <TextBox x:Name="txt_rating" PreviewTextInput="Number_PreviewTextInput" Width="55" HorizontalAlignment="Left" />
         <UniformGrid>
             <Button Content="Abbrechen" Margin="0,0,5,0" Click="Button_Close_Click" />

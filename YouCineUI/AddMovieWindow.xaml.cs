@@ -112,6 +112,7 @@ namespace YouCineUI
         private void Button_New_Actor_Click(object sender, RoutedEventArgs e)
         {
             new AddActorWindow().ShowDialog();
+            cmb_actor.DataContext = Config.Cinema.Actors;
             cmb_actor.Items.Refresh();
         }
 

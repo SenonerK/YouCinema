@@ -35,7 +35,8 @@
                 <Menu FontSize="15">
                     <MenuItem Header="Kino">
                         <MenuItem Header="Info" Click="MenuItem_Info_Click" />
-                        <MenuItem Header="Neu laden" Click="MenuItem_Reload_Click" />
+                        <CheckBox IsChecked="True" x:Name="chk_refresh" Content="Aktualisierung jede 2 Minuten" />
+                        <MenuItem Header="Aktualisieren" Click="MenuItem_Reload_Click" />
                         <MenuItem Header="Beenden" Click="MenuItem_Close_Click" />
                     </MenuItem>
                 </Menu>
@@ -218,7 +219,12 @@
             </TabControl>
         </Grid>
         <Grid x:Name="loading" Visibility="Hidden" Background="White">
-            <MediaElement Source="pack://siteoforigin:,,,/Resources/load.gif" UnloadedBehavior="Manual" MediaEnded="Loading_MediaEnded" LoadedBehavior="Play" />
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <MediaElement HorizontalAlignment="Center" VerticalAlignment="Center" Source="pack://siteoforigin:,,,/Resources/load.gif" UnloadedBehavior="Manual" MediaEnded="Loading_MediaEnded" LoadedBehavior="Play" Height="185" Width="280" />
+            <TextBlock Grid.Row="1" x:Name="lbl_version" Text="Version: 1.0 (87434)" FontSize="15" FontWeight="Bold" FontFamily="Arial" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,10" />
         </Grid>
     </Grid>
 </Window>

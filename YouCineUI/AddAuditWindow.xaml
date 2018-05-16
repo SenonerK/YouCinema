@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:YouCineUI"
         mc:Ignorable="d"
-        Title="Saal hinzufügen" Height="210" Width="300" ResizeMode="CanMinimize">
+        Title="Saal hinzufügen" Height="220" Width="300" ResizeMode="CanMinimize">
     <StackPanel Margin="10">
         <StackPanel.Resources>
             <Style TargetType="TextBlock">

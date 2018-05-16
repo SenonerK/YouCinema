@@ -62,10 +62,10 @@
         <TextBlock Text="Datum:" Grid.Row="4" Grid.ColumnSpan="2"/>
         <DatePicker x:Name="dp_date" Margin="3" VerticalAlignment="Center" Grid.Row="5" Grid.ColumnSpan="2" FontSize="18" />
 
-        <TextBlock Text="Uhrzeit:" Grid.Row="6" Grid.ColumnSpan="2"/>
+        <TextBlock Text="Uhrzeit: (zb. 09:32)" Grid.Row="6" Grid.ColumnSpan="2"/>
         <TextBox x:Name="txt_time" PreviewTextInput="txt_time_PreviewTextInput" Margin="3" VerticalAlignment="Center" Grid.Row="7" Grid.ColumnSpan="2" FontSize="18" />
         
-        <TextBlock Text="Eintrittspreis:" Grid.Row="8" Grid.ColumnSpan="2"/>
+        <TextBlock Text="Eintrittspreis: (zb. 8,99)" Grid.Row="8" Grid.ColumnSpan="2"/>
         <TextBox x:Name="txt_price" PreviewTextInput="txt_price_PreviewTextInput" Grid.Row="9" FontSize="18" Margin="4" VerticalAlignment="Center"  Grid.ColumnSpan="2" />
 
         <Button Content="Abbrechen" Grid.Row="10" Click="Button_Close_Click" />

@@ -14,23 +14,27 @@ namespace YouCineUI
 
         private void Button_OK_Click(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(txt_fname.Text) && !string.IsNullOrWhiteSpace(txt_fname.Text)
-                && !string.IsNullOrEmpty(txt_lname.Text) && !string.IsNullOrWhiteSpace(txt_lname.Text)
-                && dp_birthday.SelectedDate != null
-                && new System.Text.RegularExpressions.Regex("^[0-9]+,[0-9]+$").IsMatch(txt_rating.Text))
+            try
             {
-                YouCineLibrary.Config.Cinema.Actors.Add(
-                    YouCineLibrary.Config.Connection.CreateActor(
-                        txt_fname.Text,
-                        txt_lname.Text,
-                        dp_birthday.SelectedDate.Value,
-                        double.Parse(txt_rating.Text)));
+                if (!string.IsNullOrEmpty(txt_fname.Text) && !string.IsNullOrWhiteSpace(txt_fname.Text)
+                    && !string.IsNullOrEmpty(txt_lname.Text) && !string.IsNullOrWhiteSpace(txt_lname.Text)
+                    && dp_birthday.SelectedDate != null
+                    && new System.Text.RegularExpressions.Regex("^[0-9]+,[0-9]+$").IsMatch(txt_rating.Text))
+                {
+                    YouCineLibrary.Config.Cinema.Actors.Add(
+                        YouCineLibrary.Config.Connection.CreateActor(
+                            txt_fname.Text,
+                            txt_lname.Text,
+                            dp_birthday.SelectedDate.Value,
+                            double.Parse(txt_rating.Text)));
 
-                DialogResult = true;
-                Close();
+                    DialogResult = true;
+                    Close();
+                }
+                else
+                    MessageBox.Show("Überprüfen Sie Ihre Eingaben", "Fehler!", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            else
-                MessageBox.Show("Überprüfen Sie Ihre Eingaben", "Fehler!", MessageBoxButton.OK, MessageBoxImage.Error);
+            catch { MessageBox.Show("Überprüfen Sie Ihre Eingaben", "Fehler!", MessageBoxButton.OK, MessageBoxImage.Error); }
         }
 
         private void Text_PreviewTextInput(object sender, TextCompositionEventArgs e)

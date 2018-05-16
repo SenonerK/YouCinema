@@ -58,7 +58,7 @@
             <TextBlock Text="€/Tag" Grid.Column="1" Grid.Row="2" />
             <TextBox Grid.Row="3" x:Name="txt_year" PreviewTextInput="txt_jahr_PreviewTextInput" />
             <TextBox Grid.Column="1" Grid.Row="3" x:Name="txt_charge_day" PreviewTextInput="txt_charge_day_PreviewTextInput" />
-            <TextBlock Text="Dauer:" Grid.ColumnSpan="2" Grid.Row="4" />
+            <TextBlock Text="Dauer: (zb. 2:05:28)" Grid.ColumnSpan="2" Grid.Row="4" />
             <TextBox x:Name="txt_duration" Grid.ColumnSpan="2" Grid.Row="5" PreviewTextInput="txt_duration_PreviewTextInput" />
             <TextBlock Text="Beschreibung" Grid.ColumnSpan="2" Grid.Row="6" />
             <TextBox x:Name="txt_description" Grid.Row="7" Grid.ColumnSpan="2" TextWrapping="Wrap" />

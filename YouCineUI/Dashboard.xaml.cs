@@ -29,11 +29,14 @@ namespace YouCineUI
             AuditTimer.Tick += new EventHandler(LoadAudits);
 
             InitializeComponent();
+
             loading.Visibility = Visibility.Visible;
+            lbl_version.Text = "Version: " + System.Diagnostics.FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).ProductVersion;
+
             ShowDBUI();
 
             GeneralTimer = new DispatcherTimer();
-            GeneralTimer.Interval = TimeSpan.FromSeconds(30);
+            GeneralTimer.Interval = TimeSpan.FromMinutes(2);
             GeneralTimer.Tick += new EventHandler(LoadUI);
             GeneralTimer.Start();
         }
@@ -41,28 +44,36 @@ namespace YouCineUI
         private async void ShowDBUI()
         {
             // Window anzeigen zur auswahl der Dantenbankverbindung
-            if (new DBConnections().ShowDialog().Value && await Task.Run(()=>Config.Connection.TestConnection()) && await Task.Run(()=>Config.MediaConnection.TestConnection()))
-                LoadUI();
-            else
+            if (new DBConnections().ShowDialog().Value)
             {
-                // Wenn vrebindug nicht erfolgreich war auswahl anzeigen
-                MessageBoxResult r = MessageBox.Show(
-                    "Die Datenbankverbindug konnte nicht aufgebaut werden"
-                    + Environment.NewLine
-                    + "Möchten Sie es nochmals versuchen?",
-                    "Fehler!",
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Error);
-
-                if (r == MessageBoxResult.Yes)
-                    ShowDBUI();
+                if (await Task.Run(() => Config.Connection.TestConnection()) && await Task.Run(() => Config.MediaConnection.TestConnection()))
+                    LoadUI();
                 else
-                    this.Close();
+                {
+                    // Wenn vrebindug nicht erfolgreich war auswahl anzeigen
+                    MessageBoxResult r = MessageBox.Show(
+                        "Die Datenbankverbindug konnte nicht aufgebaut werden"
+                        + Environment.NewLine
+                        + "Möchten Sie es nochmals versuchen?",
+                        "Fehler!",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Error);
+
+                    if (r == MessageBoxResult.Yes)
+                        ShowDBUI();
+                    else
+                        this.Close();
+                }
             }
+            else
+                this.Close();
         }
 
         private async void LoadUI(object s=null, EventArgs e=null)
         {
+            if (s != null && !chk_refresh.IsChecked.Value)
+                return;
+
             loading.Visibility = Visibility.Visible;
 
             AuditTimer.Stop();

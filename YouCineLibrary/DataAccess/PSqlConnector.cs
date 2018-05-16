@@ -450,12 +450,23 @@ namespace YouCineLibrary.DataAccess
 
         public bool ClearProjections()
         {
-            /// TODO - erst löschen wenn film vorbei ist nicht wenn es anfängt
-            NpgsqlCommand cmd = new NpgsqlCommand("DELETE FROM yc_reserved WHERE fk_demonstrationid IN (SELECT demonstrationid FROM yc_demonstration WHERE demonstration_date<now()); DELETE FROM yc_demonstration WHERE demonstration_date<now();");
+            // Lösche alle Vorführungen und dessen reservierungen die schon abgespielt wurden
+            NpgsqlCommand cmd = new NpgsqlCommand(
+                "DELETE FROM yc_reserved" +
+                "WHERE fk_demonstrationid" +
+                "IN" +
+                "(" +
+                "    SELECT demonstrationid" +
+                "    FROM yc_demonstration d, yc_movie m" +
+                "    WHERE m.id = d.fk_movieid" +
+                "    AND d.demonstration_date < now() - m.duration" +
+                ");" +
+
+                "DELETE FROM yc_demonstration d" +
+                "USING yc_movie m" +
+                "WHERE m.id = d.fk_movieid" +
+                "AND d.demonstration_date < now() - m.duration;");
             return Execute(cmd);
         }
     }
 }
-/// TODO - patchen lol min 30 min warten
-/// TODO - Version
-/// TODO - Bildnr.
