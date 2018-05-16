@@ -29,6 +29,7 @@ namespace YouCineUI
             AuditTimer.Tick += new EventHandler(LoadAudits);
 
             InitializeComponent();
+            loading.Visibility = Visibility.Visible;
             ShowDBUI();
 
             GeneralTimer = new DispatcherTimer();
@@ -37,10 +38,10 @@ namespace YouCineUI
             GeneralTimer.Start();
         }
 
-        private void ShowDBUI()
+        private async void ShowDBUI()
         {
             // Window anzeigen zur auswahl der Dantenbankverbindung
-            if (new DBConnections().ShowDialog().Value && Config.Connection.TestConnection() && Config.MediaConnection.TestConnection())
+            if (new DBConnections().ShowDialog().Value && await Task.Run(()=>Config.Connection.TestConnection()) && await Task.Run(()=>Config.MediaConnection.TestConnection()))
                 LoadUI();
             else
             {
@@ -149,6 +150,11 @@ namespace YouCineUI
         {
             (sender as MediaElement).Position = TimeSpan.FromMilliseconds(1);
             (sender as MediaElement).Play();
+        }
+
+        private void MenuItem_Info_Click(object sender, RoutedEventArgs e)
+        {
+            new InfoWindow().Show();
         }
 
         #endregion

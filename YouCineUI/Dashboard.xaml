@@ -34,6 +34,7 @@
             <ToolBar ToolBarTray.IsLocked="True" Background="White">
                 <Menu FontSize="15">
                     <MenuItem Header="Kino">
+                        <MenuItem Header="Info" Click="MenuItem_Info_Click" />
                         <MenuItem Header="Neu laden" Click="MenuItem_Reload_Click" />
                         <MenuItem Header="Beenden" Click="MenuItem_Close_Click" />
                     </MenuItem>
@@ -216,7 +217,7 @@
                 </TabItem>
             </TabControl>
         </Grid>
-        <Grid x:Name="loading" Background="White">
+        <Grid x:Name="loading" Visibility="Hidden" Background="White">
             <MediaElement Source="pack://siteoforigin:,,,/Resources/load.gif" UnloadedBehavior="Manual" MediaEnded="Loading_MediaEnded" LoadedBehavior="Play" />
         </Grid>
     </Grid>
