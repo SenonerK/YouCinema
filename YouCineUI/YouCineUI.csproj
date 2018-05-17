@@ -63,6 +63,9 @@
     <Compile Include="AddAuditWindow.xaml.cs">
       <DependentUpon>AddAuditWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AddBorrwordMove.xaml.cs">
+      <DependentUpon>AddBorrwordMove.xaml</DependentUpon>
+    </Compile>
     <Compile Include="AddCustomerWindow.xaml.cs">
       <DependentUpon>AddCustomerWindow.xaml</DependentUpon>
     </Compile>
@@ -82,6 +85,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="AddAuditWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AddBorrwordMove.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

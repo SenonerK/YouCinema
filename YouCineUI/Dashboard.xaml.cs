@@ -56,6 +56,7 @@ namespace YouCineUI
             LoadCustomers();
             LoadMovies();
             LoadAudits();
+            loadBorrows();
         }
 
         #region ProjectionsTab
@@ -190,14 +191,48 @@ namespace YouCineUI
 
         #region BorrowTab
 
+        private void loadBorrows()
+        {
+            dg_borrows.ItemsSource = Config.Cinema.Borrows;
+            dg_borrows.CanUserAddRows = false;
+            dg_borrows.CanUserDeleteRows = false;
+            dg_borrows.CanUserResizeRows = false;
+            dg_borrows.IsReadOnly = true;
+
+            dg_borrows_log.ItemsSource = Config.Cinema.Borrows;
+            dg_borrows_log.CanUserAddRows = false;
+            dg_borrows_log.CanUserDeleteRows = false;
+            dg_borrows_log.CanUserResizeRows = false;
+            dg_borrows_log.IsReadOnly = true;
+        }
+
+        private void reloadBorrow()
+        {
+            dg_borrows.Items.Refresh();
+            dg_borrows_log.Items.Refresh();
+        }
+
         private void Button_Borrow_Add_Click(object sender, RoutedEventArgs e)
         {
-
+            AddBorrwordMove abm = new AddBorrwordMove();
+            abm.ShowDialog();
+            if(abm.DialogResult.HasValue && abm.DialogResult.Value)
+                reloadBorrow();
         }
 
         private void Button_Borrow_Del_Click(object sender, RoutedEventArgs e)
         {
+            if (dg_borrows.SelectedIndex > -1)
+            {
+                if ((dg_borrows.SelectedItem as BorrowModel).Remove())
+                    Config.Cinema.Borrows.Remove((dg_borrows.SelectedItem as BorrowModel));
+                else
+                    MessageBox.Show("Fehler auf Seiten der Dantenbank. Möglicherweise existieren irgendwo noch Einträge die mit diesem Kunden in verbindung stehen!");
+            }
+            else
+                MessageBox.Show("Wählen Sie etwas aus!");
 
+            reloadBorrow();
         }
 
         private void Button_Borrow_Search_Click(object sender, RoutedEventArgs e)
