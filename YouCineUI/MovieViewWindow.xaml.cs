@@ -23,11 +23,11 @@ namespace YouCineUI
             txt_year.Text = movie.Published.Year.ToString();
             txt_description.Text = movie.MovieDescription;
             txt_charge_day.Text = movie.Price.ToString();
+            txt_duration.Text = movie.Duration.ToString("hh:mm:ss");
 
             lst_cast.DataContext = YouCineLibrary.Config.GetParticipationsByMovie(movie.ID);
 
-            System.Drawing.Image i = YouCineLibrary.Config.MediaConnection.GetImage(movie.Image);
-            if (i != null) { img.Source = Util.ImageToImageSource(i); } else { img.Source = new BitmapImage(new Uri("pack://siteoforigin:,,,/Resources/noposter.jpg")); }
+            img.Source = Util.ImageIDToBitmapImage(movie.Image);
         }
 
         private void Button_Cancel_Click(object sender, RoutedEventArgs e)

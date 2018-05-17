@@ -30,18 +30,24 @@ namespace YouCineLibrary.DataAccess
 
         bool DeleteCustomer(string ID);
 
-        bool RemoveBorrowedMovie(string ID);
-
         CustomerModel CreateCustomer(string firstname, string lastname, string email);
 
         ActorModel CreateActor(string firstname, string lastname, DateTime birthday, double rating);
 
-        MovieModel CreateMovie(string name, string description, DateTime year, double price, System.Drawing.Image photo);
+        MovieModel CreateMovie(string name, string description, DateTime year, double price, System.Drawing.Image photo, DateTime duration);
 
         MovieParticipationModel CreateMovieParticipation(string movieID, string ActorID, string Role);
 
         AuditoriumModel CreateAuditorium(string name, int cols, int rows);
 
-        BorrowModel AddBorrowedMovie(DateTime endtime, string name, string movie);
+        ProjectionModel CreateProjection(DateTime datum, double price, string movieID, string auditID);
+
+        bool DeleteProjection(string ID);
+
+        ReservationModel CreateReservation(string customerID, string projectionID, int col, int row);
+
+        bool DeleteReservation(string ID);
+
+        bool ClearProjections();
     }
 }

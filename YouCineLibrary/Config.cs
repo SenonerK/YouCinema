@@ -38,19 +38,27 @@ namespace YouCineLibrary
             MediaConnection = null;
         }
 
-        public static void LoadCinema()
+        public static bool LoadCinema()
         {
             Cinema = new CinemaModel();
 
-            // Alles von der DB laden. Bitte Reihenfolge nicht ändern
-            Cinema.Movies = Connection.LoadMovies();
-            Cinema.Auditoriums = Connection.LoadAuditoriums();
-            Cinema.Actors = Connection.LoadActors();
-            Cinema.Customers = Connection.LoadCustomers();
-            Cinema.Projections = Connection.LoadProjections();
-            Cinema.Reservations = Connection.LoadReservations();
-            Cinema.Borrows = Connection.LoadBorrows();
-            Cinema.MovieParticipations = Connection.LoadMovieParticipations();
+            try
+            {
+                // Alles von der DB laden. Bitte Reihenfolge nicht ändern
+                Cinema.Movies = Connection.LoadMovies();
+                Cinema.Auditoriums = Connection.LoadAuditoriums();
+                Cinema.Actors = Connection.LoadActors();
+                Cinema.Customers = Connection.LoadCustomers();
+                Cinema.Projections = Connection.LoadProjections();
+                Cinema.Reservations = Connection.LoadReservations();
+                Cinema.Borrows = Connection.LoadBorrows();
+                Cinema.MovieParticipations = Connection.LoadMovieParticipations();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public static AuditoriumModel GetAuditById(string v)
@@ -80,6 +88,24 @@ namespace YouCineLibrary
             return null;
         }
 
+        public static CustomerModel GetCustomerById(string ID)
+        {
+            foreach (CustomerModel m in Cinema.Customers)
+                if (m.ID == ID)
+                    return m;
+
+            return null;
+        }
+
+        public static ProjectionModel GetProjectionById(string ID)
+        {
+            foreach (ProjectionModel m in Cinema.Projections)
+                if (m.ID == ID)
+                    return m;
+
+            return null;
+        }
+
         public static List<MovieParticipationModel> GetParticipationsByMovie(string movieID)
         {
             List<MovieParticipationModel> ret = new List<MovieParticipationModel>();
@@ -91,6 +117,80 @@ namespace YouCineLibrary
             }
 
             return ret;
+        }
+
+        public static List<ProjectionModel> SearchProjectionByDate(DateTime from, DateTime to)
+        {
+            List<ProjectionModel> ret = new List<ProjectionModel>();
+
+            foreach(ProjectionModel m in Cinema.Projections)
+            {
+                if (m.Date >= from && m.Date <= to)
+                    ret.Add(m);
+            }
+            return ret;
+        }
+
+        public static List<ReservationModel> SearchReservationByDate(DateTime from, DateTime to)
+        {
+            List<ReservationModel> ret = new List<ReservationModel>();
+
+            foreach (ReservationModel m in Cinema.Reservations)
+            {
+                ProjectionModel tmp = GetProjectionById(m.Projection);
+                if (tmp.Date >= from && tmp.Date <= to)
+                    ret.Add(m);
+            }
+            return ret;
+        }
+
+        public static bool ReservationPositionExists(string audit, int col, int row)
+        {
+            AuditoriumModel tmp = Config.GetAuditById(audit);
+            if (col == 0 || row == 0)
+                return false;
+
+            return (row <= tmp.Rows && col <= tmp.Columns);
+        }
+
+        public static bool ReservationPositionIsTaken(string proj, int row, int col)
+        {
+            foreach (ReservationModel m in Cinema.Reservations)
+            {
+                if (m.Projection == proj && m.Row == row && m.Column == col)
+                    return true;
+            }
+
+            return false;
+        }
+
+        public static MovieModel GetRunningMovieByAudit(string auditID)
+        {
+            foreach (ProjectionModel m in Cinema.Projections)
+            {
+                if (m.Auditorium == auditID && m.Date < DateTime.Now && DateTime.Now < (AddTime(m.Date, GetMovieById(m.Movie).Duration)))
+                    return GetMovieById(m.Movie);
+            }
+
+            return null;
+        }
+
+        public static DateTime AddTime(DateTime date, DateTime duration)
+        {
+            return date.AddSeconds((duration.Hour*60*60)+(duration.Minute*60)+duration.Second);
+        }
+
+        public static bool isAuditOccupied(string auditID, DateTime from, DateTime to)
+        {
+            foreach (ProjectionModel m in Cinema.Projections)
+            {
+                DateTime tmpto = AddTime(m.Date, GetMovieById(m.Movie).Duration);
+
+                if (m.Auditorium==auditID && ((from >= m.Date && from <= tmpto) || (to>=m.Date && to<=tmpto) || (m.Date>=from && m.Date<=to) || (tmpto>=from && tmpto<=to)))
+                    return true;
+            }
+
+            return false;
         }
     }
 }
