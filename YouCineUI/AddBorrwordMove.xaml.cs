@@ -48,10 +48,10 @@ namespace YouCineUI
                     this.Close();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBoxResult dr = MessageBox.Show("Bitte überprüfen Sie Ihre eingaben. Möchten Sie es erneut versuchen?", "Fehler", MessageBoxButton.YesNo, MessageBoxImage.Information);
-                if(dr == MessageBoxResult.No)
+                if (dr == MessageBoxResult.No)
                 {
                     this.Close();
                 }

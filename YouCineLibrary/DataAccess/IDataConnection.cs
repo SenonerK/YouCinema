@@ -30,6 +30,8 @@ namespace YouCineLibrary.DataAccess
 
         bool DeleteCustomer(string ID);
 
+        bool RemoveBorrowedMovie(string ID);
+
         CustomerModel CreateCustomer(string firstname, string lastname, string email);
 
         ActorModel CreateActor(string firstname, string lastname, DateTime birthday, double rating);
@@ -37,6 +39,8 @@ namespace YouCineLibrary.DataAccess
         MovieModel CreateMovie(string name, string description, DateTime year, double price, System.Drawing.Image photo, DateTime duration);
 
         MovieParticipationModel CreateMovieParticipation(string movieID, string ActorID, string Role);
+
+        BorrowModel AddBorrowedMovie(DateTime endtime, string name, string movie);
 
         AuditoriumModel CreateAuditorium(string name, int cols, int rows);
 

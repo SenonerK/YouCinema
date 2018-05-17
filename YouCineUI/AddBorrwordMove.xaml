@@ -8,7 +8,6 @@
         Title="AddBorrwordMove" Height="301" Width="300"
         MinWidth="299" MinHeight="300">
     <Grid>
-        <!-- Setup colume -->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="30"/>
             <ColumnDefinition Width="*"/>

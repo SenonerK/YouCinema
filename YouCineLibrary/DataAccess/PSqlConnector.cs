@@ -241,7 +241,7 @@ namespace YouCineLibrary.DataAccess
         {
             List<BorrowModel> ret = new List<BorrowModel>();
 
-            DataTable tmp = Query("SELECT id,start_time,end_time,fk_customerid,fk_movieid FROM yc_borrow");
+            DataTable tmp = Query("SELECT BID,CAST(start_time AS DATE),CAST(end_time AS DATE),fk_customerid,fk_movieid, lastname, firstname, m_name FROM yc_borrow JOIN yc_customer ON yc_borrow.fk_customerid = yc_customer.id JOIN yc_movie ON yc_borrow.fk_movieid = yc_movie.id");
 
             if (tmp == null)
                 throw new Exception("Datenbank hat NULL zurückgegeben bei yc_borrow");
@@ -254,12 +254,43 @@ namespace YouCineLibrary.DataAccess
                     LendDate = DateTime.Parse(r[1].ToString()),
                     BringBackDate = DateTime.Parse(r[2].ToString()),
                     Cutomer = r[3].ToString(),
-                    Movie = r[4].ToString()
+                    Movie = r[4].ToString(),
+                    CLN = r[5].ToString(),
+                    CFN = r[6].ToString(),
+                    MN = r[7].ToString()
                 });
             }
 
             return ret;
         }
+
+
+        /// TODO borrow_log search fertig machen
+        /*
+        public List<BorrowModel> searchBorrows(DateTime DTFS, DateTime DTLS)
+        {
+            List<BorrowModel> res = new List<BorrowModel>();
+
+            NpgsqlCommand cmd = new NpgsqlCommand("SELECT CAST(logdate AS DATE),fk_movieid, fk_customerid, lastname, firstname, m_name FROM yc_borrow_log JOIN yc_customer ON yc_borrow_log.fk_customerid = yc_customer.id JOIN yc_movie ON yc_borrow_log.fk_movieid = yc_movie.id WHERE yc_borrow_log.logdate BETWEEN @dtfs and @dtls");
+            cmd.Parameters.Add("dtfs", DTFS);
+            cmd.Parameters.Add("dtls", DTLS);
+
+            DataTable tmp = Query(cmd);
+
+            if (tmp == null)
+            {
+                throw new Exception("Datenbank hat NULL zurückgegeben bei yc_borrow_log");
+            }
+
+            foreach (DataRow r in tmp.Rows)
+            {
+                ret.Add(new BorrowModel()
+                {
+                    ID = r[0].ToString
+                });
+            }
+        }
+        */
 
         public List<MovieParticipationModel> LoadMovieParticipations()
         {
@@ -445,6 +476,13 @@ namespace YouCineLibrary.DataAccess
         {
             NpgsqlCommand cmd = new NpgsqlCommand("DELETE FROM yc_reserved WHERE ticketid=@ID");
             cmd.Parameters.Add(new NpgsqlParameter("ID", ID));
+            return Execute(cmd);
+        }
+
+        public bool DeleteCustomer(string ID)
+        {
+            NpgsqlCommand cmd = new NpgsqlCommand("UPDATE yc_customer SET isdisabled=true WHERE id=@CID");
+            cmd.Parameters.Add(new NpgsqlParameter("CID", ID));
             return Execute(cmd);
         }
 

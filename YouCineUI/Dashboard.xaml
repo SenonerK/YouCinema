@@ -196,7 +196,15 @@
                             <RowDefinition Height="45*" />
                         </Grid.RowDefinitions>
 
-                        <DataGrid x:Name="dg_borrows" />
+                        <DataGrid x:Name="dg_borrows" ItemsSource="{Binding}" AutoGenerateColumns="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Width="*" Header="Vorname" Binding="{Binding CFN}" />
+                                <DataGridTextColumn Width="*" Header="Nachname" Binding="{Binding CLN}" />
+                                <DataGridTextColumn Width="*" Header="Film" Binding="{Binding MN}" />
+                                <DataGridTextColumn Width="*" Header="Ausgeliehen am" Binding="{Binding LendDate, StringFormat={}{0:MM/dd/yyyy}}" />
+                                <DataGridTextColumn Width="*" Header="Ausgeliehen bis" Binding="{Binding BringBackDate, StringFormat={}{0:MM/dd/yyyy}}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
 
                         <StackPanel Grid.Column="1" VerticalAlignment="Center">
                             <Button Content="Verleihen" Style="{StaticResource RightPanel}" Click="Button_Borrow_Add_Click" />
@@ -213,7 +221,14 @@
                             <Button Content="Suche" Margin="10,0,0,0" FontSize="18" Click="Button_Borrow_Search_Click"/>
                         </StackPanel>
 
-                        <DataGrid Grid.Row="3" x:Name="dg_borrows_log" />
+                        <DataGrid Grid.Row="3" x:Name="dg_borrows_log" ItemsSource="{Binding}" AutoGenerateColumns="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Width="*" Header="Ausliehdatum" Binding="{Binding LendDate, StringFormat={}{0:MM/dd/yyyy}}"></DataGridTextColumn>
+                                <DataGridTextColumn Width="*" Header="Vorname" Binding="{Binding CFN}"></DataGridTextColumn>
+                                <DataGridTextColumn Width="*" Header="Nachname" Binding="{Binding CLN}"></DataGridTextColumn>
+                                <DataGridTextColumn Width="*" Header="Film" Binding="{Binding MN}"></DataGridTextColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
                     </Grid>
                 </TabItem>
             </TabControl>

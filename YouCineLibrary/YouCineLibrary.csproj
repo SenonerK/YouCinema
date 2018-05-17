@@ -31,10 +31,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Security">
-      <HintPath>..\..\..\..\..\..\Downloads\Npgsql2.0.1-bin-ms.net3.5sp1\Npgsql2.0.1-bin-ms.net3.5sp1\bin\Mono.Security.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\Library\C#\Npgsql\Mono.Security.dll</HintPath>
     </Reference>
     <Reference Include="Npgsql">
-      <HintPath>..\..\..\..\..\..\Downloads\Npgsql2.0.1-bin-ms.net3.5sp1\Npgsql2.0.1-bin-ms.net3.5sp1\bin\Npgsql.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\Library\C#\Npgsql\Npgsql.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
