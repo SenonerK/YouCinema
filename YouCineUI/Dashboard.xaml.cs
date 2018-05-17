@@ -69,7 +69,7 @@ namespace YouCineUI
                 this.Close();
         }
 
-        private async void LoadUI(object s=null, EventArgs e=null)
+        private async void LoadUI(object s = null, EventArgs e = null)
         {
             if (s != null && !chk_refresh.IsChecked.Value)
                 return;
@@ -78,7 +78,7 @@ namespace YouCineUI
 
             AuditTimer.Stop();
 
-            if (await Task.Run(()=>Config.LoadCinema()))
+            if (await Task.Run(() => Config.LoadCinema()))
             {
                 loading.Visibility = Visibility.Hidden;
 
@@ -90,7 +90,7 @@ namespace YouCineUI
                 LoadAudits();
                 LoadProjections();
                 LoadReservations();
-                reloadBorrow();
+                LoadBorrows();
 
                 AuditTimer.Start();
             }
@@ -142,7 +142,7 @@ namespace YouCineUI
 
         private void btn_projections_del_Click(object sender, RoutedEventArgs e)
         {
-            if(dg_projections.SelectedIndex > -1)
+            if (dg_projections.SelectedIndex > -1)
             {
                 if (Config.Connection.DeleteProjection((dg_projections.SelectedItem as ProjectionModel).ID))
                     Config.Cinema.Projections.Remove(dg_projections.SelectedItem as ProjectionModel);
@@ -189,7 +189,9 @@ namespace YouCineUI
 
         private void Movie_Click(object sender, EventArgs e)
         {
+            Cursor = Cursors.Wait;
             new MovieViewWindow(sender as MovieModel).ShowDialog();
+            Cursor = Cursors.Arrow;
         }
 
         private void Button_Movie_Add_Click(object sender, RoutedEventArgs e)
@@ -237,10 +239,10 @@ namespace YouCineUI
 
         #region AuditoriumTab
 
-        private void LoadAudits(object sender=null, EventArgs e=null)
+        private void LoadAudits(object sender = null, EventArgs e = null)
         {
             wrap_rooms.Children.Clear();
-            foreach(AuditoriumModel m in Config.Cinema.Auditoriums)
+            foreach (AuditoriumModel m in Config.Cinema.Auditoriums)
             {
                 wrap_rooms.Children.Add(new AuditViewControl() { Auditorium = m });
             }
@@ -286,7 +288,7 @@ namespace YouCineUI
             }
             else
                 MessageBox.Show("Wählen Sie bitte den Zeitabschnitt!", "Fehler!", MessageBoxButton.OK, MessageBoxImage.Error);
-            
+
         }
 
         private void Button_Reservations_Add_Click(object sender, RoutedEventArgs e)
@@ -314,55 +316,78 @@ namespace YouCineUI
 
         #region BorrowTab
 
-        private void loadBorrows()
+        private void LoadBorrows()
         {
-            dg_borrows.ItemsSource = Config.Cinema.Borrows;
-            dg_borrows.CanUserAddRows = false;
-            dg_borrows.CanUserDeleteRows = false;
-            dg_borrows.CanUserResizeRows = false;
-            dg_borrows.IsReadOnly = true;
-
-            dg_borrows_log.ItemsSource = Config.Cinema.Borrows;
-            dg_borrows_log.CanUserAddRows = false;
-            dg_borrows_log.CanUserDeleteRows = false;
-            dg_borrows_log.CanUserResizeRows = false;
-            dg_borrows_log.IsReadOnly = true;
-        }
-
-        private void reloadBorrow()
-        {
+            dg_borrows.DataContext = Config.Cinema.Borrows;
             dg_borrows.Items.Refresh();
+
+            Config.LoadBorrowLog();
+            dg_borrows_log.DataContext = Config.Cinema.BorrowLog;
             dg_borrows_log.Items.Refresh();
         }
 
         private void Button_Borrow_Add_Click(object sender, RoutedEventArgs e)
         {
-            AddBorrwordMove abm = new AddBorrwordMove();
-            abm.ShowDialog();
-            if (abm.DialogResult.HasValue && abm.DialogResult.Value)
-                reloadBorrow();
+            new AddBorrwordMove().ShowDialog();
+            LoadBorrows();
+            dg_customers.Items.Refresh();
         }
 
         private void Button_Borrow_Del_Click(object sender, RoutedEventArgs e)
         {
             if (dg_borrows.SelectedIndex > -1)
             {
-                if ((dg_borrows.SelectedItem as BorrowModel).Remove())
-                    Config.Cinema.Borrows.Remove((dg_borrows.SelectedItem as BorrowModel));
+                BorrowModel b = (dg_borrows.SelectedItem as BorrowModel);
+                if (b.BringBackDate < DateTime.Now)
+                {
+                    double betrag = Convert.ToInt32((DateTime.Now - b.BringBackDate).TotalDays) * Config.GetMovieById(b.Movie).Price;
+                    int cst = Config.Cinema.Customers.IndexOf(Config.GetCustomerById(b.Customer));
+
+                    Config.Cinema.Customers[cst].Credit -= betrag;
+                    Config.Cinema.Customers[cst].Update();
+                    dg_customers.Items.Refresh();
+
+                    MessageBox.Show("Der Film wurde zu spät abgegeben! Der Betrag von " + betrag + " € wurde zusätzlich vom Konto des Kunden abgezogen!", "Info", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    
+                }
+
+                if (b.Remove())
+                    Config.Cinema.Borrows.Remove(b);
                 else
-                    MessageBox.Show("Fehler auf Seiten der Dantenbank. Möglicherweise existieren irgendwo noch Einträge die mit diesem Kunden in verbindung stehen!");
+                    MessageBox.Show("Fehler auf Seiten der Dantenbank!");
             }
             else
                 MessageBox.Show("Wählen Sie etwas aus!");
 
-            reloadBorrow();
+            LoadBorrows();
         }
 
         private void Button_Borrow_Search_Click(object sender, RoutedEventArgs e)
         {
-            // ToDo
+            if ((sender as Button).Content.ToString() == "Suche"
+                && dte_von_borrows.SelectedDate.HasValue
+                && dte_bis_borrows.SelectedDate.HasValue
+                && dte_bis_borrows.SelectedDate.Value >= dte_von_borrows.SelectedDate.Value
+                && dte_bis_borrows.SelectedDate.Value != dte_von_borrows.SelectedDate.Value)
+            {
+                (sender as Button).Content = "Alle";
+                dte_von_borrows.IsEnabled = false;
+                dte_bis_borrows.IsEnabled = false;
+                dg_borrows_log.DataContext = Config.SearchBorrowLogByDate(
+                    dte_von_borrows.SelectedDate.Value,
+                    dte_bis_borrows.SelectedDate.Value
+                    );
+            }
+            else if ((sender as Button).Content.ToString() == "Alle")
+            {
+                (sender as Button).Content = "Suche";
+                dte_von_borrows.IsEnabled = true;
+                dte_bis_borrows.IsEnabled = true;
+                LoadBorrows();
+            }
+            else
+                MessageBox.Show("Wählen Sie bitte den Zeitabschnitt!", "Fehler!", MessageBoxButton.OK, MessageBoxImage.Error);
         }
-
 
         #endregion        
     }

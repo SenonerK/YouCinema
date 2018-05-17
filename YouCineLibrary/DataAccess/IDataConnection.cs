@@ -26,6 +26,8 @@ namespace YouCineLibrary.DataAccess
 
         List<BorrowModel> LoadBorrows();
 
+        List<BorrowLogModel> LoadBorrowLog();
+
         List<MovieParticipationModel> LoadMovieParticipations();
 
         bool DeleteCustomer(string ID);
@@ -53,5 +55,7 @@ namespace YouCineLibrary.DataAccess
         bool DeleteReservation(string ID);
 
         bool ClearProjections();
+
+        bool UpdateCustomer(string ID, string email, string name, string lname, double credit);
     }
 }

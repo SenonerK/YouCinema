@@ -13,5 +13,6 @@ namespace YouCineLibrary.Models
         public List<MovieParticipationModel> MovieParticipations { get; set; }
         public List<ProjectionModel> Projections { get; set; }
         public List<ReservationModel> Reservations { get; set; }
+        public List<BorrowLogModel> BorrowLog { get; set; }
     }
 }

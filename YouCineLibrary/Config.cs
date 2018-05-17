@@ -53,12 +53,19 @@ namespace YouCineLibrary
                 Cinema.Reservations = Connection.LoadReservations();
                 Cinema.Borrows = Connection.LoadBorrows();
                 Cinema.MovieParticipations = Connection.LoadMovieParticipations();
+
+                LoadBorrowLog();
                 return true;
             }
             catch
             {
                 return false;
             }
+        }
+
+        public static void LoadBorrowLog()
+        {
+            Cinema.BorrowLog = Connection.LoadBorrowLog();
         }
 
         public static AuditoriumModel GetAuditById(string v)
@@ -191,6 +198,18 @@ namespace YouCineLibrary
             }
 
             return false;
+        }
+
+        public static List<BorrowLogModel> SearchBorrowLogByDate(DateTime from, DateTime to)
+        {
+            List<BorrowLogModel> ret = new List<BorrowLogModel>();
+
+            foreach (BorrowLogModel m in Cinema.BorrowLog)
+            {
+                if (m.Date >= from && m.Date <= to)
+                    ret.Add(m);
+            }
+            return ret;
         }
     }
 }

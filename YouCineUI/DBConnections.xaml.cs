@@ -22,6 +22,12 @@ namespace YouCineUI
         {
             InitializeComponent();
 
+            Load();
+        }
+
+        private void Load()
+        {
+            lst_db.Items.Clear();
             // Jeden connection string der schon existiert in die Auswahl laden
             foreach (ConnectionStringSettings c in ConfigurationManager.ConnectionStrings)
             {
@@ -122,6 +128,16 @@ namespace YouCineUI
                 YouCineLibrary.Config.RemoveConnection();
             }
             this.Cursor = Cursors.Arrow;
+        }
+
+        private void Button_Clear_Click(object sender, RoutedEventArgs e)
+        {
+            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            config.ConnectionStrings.ConnectionStrings.Clear();
+            config.Save();
+
+            System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
+            Application.Current.Shutdown();
         }
     }
 }

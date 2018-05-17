@@ -96,6 +96,9 @@
     <Compile Include="AuditViewControl.xaml.cs">
       <DependentUpon>AuditViewControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ChangeBalance.xaml.cs">
+      <DependentUpon>ChangeBalance.xaml</DependentUpon>
+    </Compile>
     <Compile Include="InfoWindow.xaml.cs">
       <DependentUpon>InfoWindow.xaml</DependentUpon>
     </Compile>
@@ -137,6 +140,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="AuditViewControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ChangeBalance.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

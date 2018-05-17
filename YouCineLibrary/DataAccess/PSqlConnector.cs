@@ -241,7 +241,7 @@ namespace YouCineLibrary.DataAccess
         {
             List<BorrowModel> ret = new List<BorrowModel>();
 
-            DataTable tmp = Query("SELECT BID,CAST(start_time AS DATE),CAST(end_time AS DATE),fk_customerid,fk_movieid, lastname, firstname, m_name FROM yc_borrow JOIN yc_customer ON yc_borrow.fk_customerid = yc_customer.id JOIN yc_movie ON yc_borrow.fk_movieid = yc_movie.id");
+            DataTable tmp = Query("SELECT BID,start_time,end_time,fk_customerid,fk_movieid FROM yc_borrow");
 
             if (tmp == null)
                 throw new Exception("Datenbank hat NULL zurückgegeben bei yc_borrow");
@@ -253,44 +253,35 @@ namespace YouCineLibrary.DataAccess
                     ID = r[0].ToString(),
                     LendDate = DateTime.Parse(r[1].ToString()),
                     BringBackDate = DateTime.Parse(r[2].ToString()),
-                    Cutomer = r[3].ToString(),
-                    Movie = r[4].ToString(),
-                    CLN = r[5].ToString(),
-                    CFN = r[6].ToString(),
-                    MN = r[7].ToString()
+                    Customer = r[3].ToString(),
+                    Movie = r[4].ToString()
                 });
             }
 
             return ret;
         }
 
-
-        /// TODO borrow_log search fertig machen
-        /*
-        public List<BorrowModel> searchBorrows(DateTime DTFS, DateTime DTLS)
+        public List<BorrowLogModel> LoadBorrowLog()
         {
-            List<BorrowModel> res = new List<BorrowModel>();
+            List<BorrowLogModel> ret = new List<BorrowLogModel>();
 
-            NpgsqlCommand cmd = new NpgsqlCommand("SELECT CAST(logdate AS DATE),fk_movieid, fk_customerid, lastname, firstname, m_name FROM yc_borrow_log JOIN yc_customer ON yc_borrow_log.fk_customerid = yc_customer.id JOIN yc_movie ON yc_borrow_log.fk_movieid = yc_movie.id WHERE yc_borrow_log.logdate BETWEEN @dtfs and @dtls");
-            cmd.Parameters.Add("dtfs", DTFS);
-            cmd.Parameters.Add("dtls", DTLS);
-
-            DataTable tmp = Query(cmd);
+            DataTable tmp = Query("SELECT logdate,fk_customerid,fk_movieid FROM yc_borrow_log");
 
             if (tmp == null)
-            {
                 throw new Exception("Datenbank hat NULL zurückgegeben bei yc_borrow_log");
-            }
 
             foreach (DataRow r in tmp.Rows)
             {
-                ret.Add(new BorrowModel()
+                ret.Add(new BorrowLogModel()
                 {
-                    ID = r[0].ToString
+                    Date = DateTime.Parse(r[0].ToString()),
+                    Customer = r[1].ToString(),
+                    Movie = r[2].ToString()
                 });
             }
+
+            return ret;
         }
-        */
 
         public List<MovieParticipationModel> LoadMovieParticipations()
         {
@@ -359,6 +350,8 @@ namespace YouCineLibrary.DataAccess
         public MovieModel CreateMovie(string name, string description, DateTime year, double price, System.Drawing.Image photo, DateTime duration)
         {
             string pid = Config.MediaConnection.UploadImage(photo);
+            if (pid == null)
+                throw new Exception("Fehler beim Hochladen des Bildes");
 
             NpgsqlCommand cmd = new NpgsqlCommand("INSERT INTO yc_movie (m_name,description,publishing_year,price_per_day_borrow, thumbnail,duration) VALUES (@Name, @Desc, @Year, @Price, @Photo,@Lenght) RETURNING id");
             cmd.Parameters.Add(new NpgsqlParameter("Name", name));
@@ -479,13 +472,6 @@ namespace YouCineLibrary.DataAccess
             return Execute(cmd);
         }
 
-        public bool DeleteCustomer(string ID)
-        {
-            NpgsqlCommand cmd = new NpgsqlCommand("UPDATE yc_customer SET isdisabled=true WHERE id=@CID");
-            cmd.Parameters.Add(new NpgsqlParameter("CID", ID));
-            return Execute(cmd);
-        }
-
         public bool ClearProjections()
         {
             // Lösche alle Vorführungen und dessen reservierungen die schon abgespielt wurden
@@ -504,6 +490,45 @@ namespace YouCineLibrary.DataAccess
                 "USING yc_movie m" +
                 "WHERE m.id = d.fk_movieid" +
                 "AND d.demonstration_date < now() - m.duration;");
+            return Execute(cmd);
+        }
+
+        public bool RemoveBorrowedMovie(string ID)
+        {
+            NpgsqlCommand cmd = new NpgsqlCommand("DELETE FROM yc_borrow WHERE id=@ID");
+            cmd.Parameters.Add(new NpgsqlParameter("ID", ID));
+            return Execute(cmd);
+        }
+
+        public BorrowModel AddBorrowedMovie(DateTime endtime, string name, string movie)
+        {
+            NpgsqlCommand cmd = new NpgsqlCommand("INSERT INTO yc_borrow (start_time, end_time, fk_customerid, fk_movieid) VALUES (now(), @End, @Customer, @Movie) RETURNING id");
+            cmd.Parameters.Add(new NpgsqlParameter("End", endtime));
+            cmd.Parameters.Add(new NpgsqlParameter("Customer", name));
+            cmd.Parameters.Add(new NpgsqlParameter("Movie", movie));
+
+            DataTable tmp = Query(cmd);
+            if (tmp == null)
+                throw new Exception("Die Datenbank hat NULL zurückgegeben bei yc_borrow!");
+
+            return new BorrowModel()
+            {
+                ID = tmp.Rows[0][0].ToString(),
+                LendDate = DateTime.Now,
+                BringBackDate = endtime,
+                Customer = name,
+                Movie = movie
+            };
+        }
+
+        public bool UpdateCustomer(string ID, string email, string name, string lname, double credit)
+        {
+            NpgsqlCommand cmd = new NpgsqlCommand("UPDATE yc_customer SET email=@Mail, firstname=@Name, lastname=@LName, credit=@Credit WHERE id=@ID");
+            cmd.Parameters.Add(new NpgsqlParameter("ID", ID));
+            cmd.Parameters.Add(new NpgsqlParameter("Mail", email));
+            cmd.Parameters.Add(new NpgsqlParameter("Name", name));
+            cmd.Parameters.Add(new NpgsqlParameter("LName", lname));
+            cmd.Parameters.Add(new NpgsqlParameter("Credit", credit));
             return Execute(cmd);
         }
     }

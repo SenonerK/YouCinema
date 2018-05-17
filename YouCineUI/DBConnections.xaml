@@ -5,11 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:YouCineUI"
         mc:Ignorable="d"
-        Title="Verbindung" Height="300" Width="500">
+        Title="Verbindung" Height="300" MinHeight="300" MinWidth="520" Width="520">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
@@ -17,9 +18,10 @@
         </Grid.RowDefinitions>
 
         <Button Content="Hinzufügen" FontSize="16" Click="Button_New_Click" Margin="7"/>
-        <ListBox Grid.Row="1" x:Name="lst_db" SelectionChanged="lst_db_SelectionChanged" />
+        <Button Content="Leeren" Grid.Column="1" FontSize="16" Click="Button_Clear_Click" Margin="7"/>
+        <ListBox Grid.Row="1" Grid.ColumnSpan="2" x:Name="lst_db" SelectionChanged="lst_db_SelectionChanged" />
 
-        <Grid Grid.Column="1" Margin="20" Grid.Row="0" Grid.RowSpan="2">
+        <Grid Grid.Column="2" Margin="20" Grid.Row="0" Grid.RowSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="20" />
                 <RowDefinition Height="20" />

@@ -51,45 +51,54 @@ namespace YouCineUI
 
         private void Button_ok_Click(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(txt_name.Text) && !string.IsNullOrWhiteSpace(txt_name.Text)
-                && !string.IsNullOrEmpty(txt_year.Text) && !string.IsNullOrWhiteSpace(txt_year.Text)
-                && !string.IsNullOrEmpty(txt_charge_day.Text) && !string.IsNullOrWhiteSpace(txt_charge_day.Text)
-                && !string.IsNullOrEmpty(txt_description.Text) && !string.IsNullOrWhiteSpace(txt_description.Text)
-                && !string.IsNullOrEmpty(txt_duration.Text) && !string.IsNullOrWhiteSpace(txt_duration.Text)
-                && lst_cast.Items.Count > 0
-                && img.Source != null
-                && int.Parse(txt_year.Text)<2100 && int.Parse(txt_year.Text)>1700
-                && new Regex("^[0-9]{0,2}:[0-9]{0,2}:[0-9]{0,2}$").IsMatch(txt_duration.Text))
+            Cursor = Cursors.Wait;
+            try
             {
-                MovieModel movie = Config.Connection.CreateMovie(
-                    txt_name.Text,
-                    txt_description.Text,
-                    new DateTime(int.Parse(txt_year.Text), 1, 1),
-                    double.Parse(txt_charge_day.Text),
-                    Util.FileToImage(img.DataContext as string),
-                    new DateTime(1,1,1,
-                        int.Parse(txt_duration.Text.Split(':')[0]),
-                        int.Parse(txt_duration.Text.Split(':')[1]),
-                        int.Parse(txt_duration.Text.Split(':')[2]))
-                    );
-
-                Config.Cinema.Movies.Add(movie);
-
-                foreach (MovieParticipationModel m in Participations)
+                if (!string.IsNullOrEmpty(txt_name.Text) && !string.IsNullOrWhiteSpace(txt_name.Text)
+                    && !string.IsNullOrEmpty(txt_year.Text) && !string.IsNullOrWhiteSpace(txt_year.Text)
+                    && !string.IsNullOrEmpty(txt_charge_day.Text) && !string.IsNullOrWhiteSpace(txt_charge_day.Text)
+                    && !string.IsNullOrEmpty(txt_description.Text) && !string.IsNullOrWhiteSpace(txt_description.Text)
+                    && !string.IsNullOrEmpty(txt_duration.Text) && !string.IsNullOrWhiteSpace(txt_duration.Text)
+                    && lst_cast.Items.Count > 0
+                    && img.Source != null
+                    && int.Parse(txt_year.Text) < 2100 && int.Parse(txt_year.Text) > 1700
+                    && new Regex("^[0-9]{0,2}:[0-9]{0,2}:[0-9]{0,2}$").IsMatch(txt_duration.Text))
                 {
-                    Config.Cinema.MovieParticipations.Add(Config.Connection.CreateMovieParticipation(
-                            movie.ID,
-                            m.Actor,
-                            m.Role
-                        )
-                    );
-                }
+                    MovieModel movie = Config.Connection.CreateMovie(
+                        txt_name.Text,
+                        txt_description.Text,
+                        new DateTime(int.Parse(txt_year.Text), 1, 1),
+                        double.Parse(txt_charge_day.Text),
+                        Util.FileToImage(img.DataContext as string),
+                        new DateTime(1, 1, 1,
+                            int.Parse(txt_duration.Text.Split(':')[0]),
+                            int.Parse(txt_duration.Text.Split(':')[1]),
+                            int.Parse(txt_duration.Text.Split(':')[2]))
+                        );
 
-                DialogResult = true;
-                Close();
+                    Config.Cinema.Movies.Add(movie);
+
+                    foreach (MovieParticipationModel m in Participations)
+                    {
+                        Config.Cinema.MovieParticipations.Add(Config.Connection.CreateMovieParticipation(
+                                movie.ID,
+                                m.Actor,
+                                m.Role
+                            )
+                        );
+                    }
+
+                    DialogResult = true;
+                    Close();
+                }
+                else
+                    MessageBox.Show("Überprüfen Sie Iher Eingaben", "Fehler!", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            else
-                MessageBox.Show("Überprüfen Sie Iher Eingaben", "Fehler!", MessageBoxButton.OK, MessageBoxImage.Error);
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Fehler!", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            Cursor = Cursors.Arrow;
         }
 
         private void Button_Add_Actor_Click(object sender, RoutedEventArgs e)

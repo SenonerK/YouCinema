@@ -55,6 +55,7 @@
     <Compile Include="DataAccess\PSqlConnector.cs" />
     <Compile Include="Models\ActorModel.cs" />
     <Compile Include="Models\AuditoriumModel.cs" />
+    <Compile Include="Models\BorrowLogModel.cs" />
     <Compile Include="Models\BorrowModel.cs" />
     <Compile Include="Models\CinemaModel.cs" />
     <Compile Include="Models\CustomerModel.cs" />

@@ -54,7 +54,7 @@
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
-        <DatePicker Grid.Column="1" Grid.Row="8" x:Name="dp_ABM"></DatePicker>
+        <DatePicker Grid.Column="1" Grid.Row="8" x:Name="dp_ABM" FontSize="15"></DatePicker>
 
         <!-- Button -->
         <Button Grid.Column="1" Grid.Row="10" Margin="40,3,0,0" HorizontalAlignment="Left" Width="60" Height="24" VerticalAlignment="Top" Click="Button_Click" IsDefault="True">Ok</Button>
