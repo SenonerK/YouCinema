@@ -502,7 +502,7 @@ namespace YouCineLibrary.DataAccess
 
         public BorrowModel AddBorrowedMovie(DateTime endtime, string name, string movie)
         {
-            NpgsqlCommand cmd = new NpgsqlCommand("INSERT INTO yc_borrow (start_time, end_time, fk_customerid, fk_movieid) VALUES (now(), @End, @Customer, @Movie) RETURNING id");
+            NpgsqlCommand cmd = new NpgsqlCommand("INSERT INTO yc_borrow (start_time, end_time, fk_customerid, fk_movieid) VALUES (now(), @End, @Customer, @Movie) RETURNING BID");
             cmd.Parameters.Add(new NpgsqlParameter("End", endtime));
             cmd.Parameters.Add(new NpgsqlParameter("Customer", name));
             cmd.Parameters.Add(new NpgsqlParameter("Movie", movie));
