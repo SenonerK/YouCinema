@@ -1,0 +1,4 @@
+Um den Medienserver bereitzustellen müssen Sie einen Webserver haben der PHP unterstützt.
+Kopieren Sie den Ordner "Server" auf den Root Ihres Webservers.
+
+Als Medienserver können Sie nun zb. "http://localhost/Server" eingeben
